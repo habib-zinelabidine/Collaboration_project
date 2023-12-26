@@ -11,12 +11,17 @@
   align-items: center;
 }
 form {
-  width: 300px;
+  width: 400px;
+  background-color: rgba(0, 0, 0, 0.129);
+  padding: 30px;
+  border-radius: 5px;
 }
 h1 {
   color: white;
   font-size: 30px;
   padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
 }
 h2 {
   color: white;
@@ -24,10 +29,10 @@ h2 {
 }
 label {
   color: white;
-  padding: 10px 0;
   font-size: 1rem;
 }
-input[type="email"],input[type="password"] {
+input[type="email"],
+input[type="password"] {
   padding: 10px;
   border-radius: 5px;
   width: 100%;
@@ -35,6 +40,7 @@ input[type="email"],input[type="password"] {
   border: none;
   outline: none;
   color: white;
+  margin: 10px 0;
 }
 .forgot_password {
   display: flex;
@@ -64,14 +70,14 @@ button {
   width: 100%;
   align-items: center;
 }
-.check input{
-    margin-right: 10px;
+.check input {
+  margin-right: 10px;
 }
 p {
   color: white;
   font-size: 1rem;
 }
-.create_account{
-    text-decoration: none;
-    color: #7eb7b0;
+.create_account {
+  text-decoration: none;
+  color: #7eb7b0;
 }
