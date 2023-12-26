@@ -1,0 +1,18 @@
+.topic_container{
+    background-color: white;
+    width: 300px;
+    padding: 10px;
+    height: 320px;
+    margin: 20px;
+    border-radius: 5px;
+}
+img{
+    max-width: 280px;
+}
+h2{
+    color: black;
+}
+p{
+    color: black;
+    overflow: auto;
+}
