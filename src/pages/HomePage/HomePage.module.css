@@ -1,7 +1,8 @@
-.container{
-    display: flex;
+.container {
+  display: flex;
+
 }
-.options{
-    display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+.options {
+  display: flex;
+  flex-wrap: wrap;
 }
