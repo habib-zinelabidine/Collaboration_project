@@ -1,31 +1,71 @@
-.topic_container{
-    background-color: white;
-    width: 300px;
-    height: 300px;
-    margin: 20px;
-    border-radius: 5px;
-    justify-content: center;
-    flex-wrap: wrap;
-    overflow: hidden;
+.card {
+  width: 250px;
+  height: 150px;
+  margin: 20px;
+  padding: 0;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #33333f;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
-.topic_image img{
-    width: 100%;
-    height: 120px;
+
+.card .image img{
+  margin: 0;
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
 }
-.card_content{
-    padding: 10px;
+.content h3{
+  text-transform: uppercase;
+  font-size: medium;
+  color: white;
+  margin: 0;
+  padding: 0 10px;
 }
-.card_content h2{
-    color: black;
+/* 
+.card h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 20px;
 }
-.card_content p{
-    color: black;
-    text-overflow: ellipsis;
-    
+
+.focus_content {
+  height: 50px;
 }
-.avatars img{
-    height: 40px;
-    width: 40px;
-    margin: 0 10px ;
-    border-radius: 50%;
+.focus_content p {
+  display: none;
 }
+
+.card p {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.avatars img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.details {
+  height: 200px;
+  width: 200px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: white;
+  position: absolute;
+  top: 60px;
+  left: 320px;
+  z-index: 1;
+}
+.details h3 {
+  color: black;
+}
+.details p {
+  color: black;
+}
+ */
