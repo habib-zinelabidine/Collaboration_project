@@ -1,5 +1,6 @@
-nav {
-  width: 200px;
+
+.container {
+  width: 100%;
   background-color: #1f1f2b;
   height: 100vh;
   border-right: 2px solid #33333f;

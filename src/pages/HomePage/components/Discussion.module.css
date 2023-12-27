@@ -1,0 +1,33 @@
+.container {
+  background-color: #33333f;
+}
+.user_details{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+.user_details img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+.discussion{
+    display: grid;
+    grid-template-columns: 80% 20%;
+    position: relative;
+}
+.discussion_content{
+    margin: 20px;
+    height: 80vh;
+    width: 90%;
+    background-color: #1f1f2b;
+    border-radius: 10px;
+}
+.discussion_people img{
+    display: inline;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    position: absolute;
+    right: 10px;
+}

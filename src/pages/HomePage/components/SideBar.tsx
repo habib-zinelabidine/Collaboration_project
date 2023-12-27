@@ -7,7 +7,7 @@ import style from './SideBar.module.css'
 
 export default function SideBar() {
   return (
-    <nav style={style}>
+    <div className={style.container}>
         <h1>Collabory</h1>
       <ul>
         <li>
@@ -41,6 +41,6 @@ export default function SideBar() {
           </h3>
         </li>
       </ul>
-    </nav>
+    </div>
   );
 }
