@@ -26,6 +26,22 @@
   margin: 0;
   padding: 0 10px;
 }
+.content p{
+  display: none;
+}
+.card:hover{
+  padding: 20px;
+  img{
+    display: none;
+  }
+  .content p{
+    margin: 5px;
+    display: flex;
+    text-overflow: ellipsis;
+
+  }
+  
+}
 /* 
 .card h3 {
   margin: 0;

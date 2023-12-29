@@ -31,6 +31,7 @@ export default function TopicCard({ topicName, description }: any) {
         </div>
         <div className={style.content}>
           <h3 className={style.titme}>{topicName}</h3>
+          <p>{description}</p>
         </div>
       </div>
     </>

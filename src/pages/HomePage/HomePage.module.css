@@ -1,7 +1,7 @@
 .container {
   display: grid;
-  grid-template-columns: 15% 60% 25%;
-
+  grid-template-columns: 15% 60% 25%;  
+  
 }
 .options {
   display: flex;
@@ -21,8 +21,20 @@
 .search span{
   text-decoration: underline;
 }
+.search select{
+  padding: 10px;
+  background-color: #7eb7b0;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  color: white;
+  margin: 0 10px;
+}
+.search  option{
+  padding: 20px;
+}
 .search input{
-  width: 70%;
+  width: 60%;
   align-items: center;
   padding: 10px;
   border-radius: 5px;
@@ -35,4 +47,7 @@
 .topic_container h1{
   font-size: 2rem;
   margin-top: 20px;
+}
+.topic_container button{
+  width: 15%;
 }
