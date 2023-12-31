@@ -1,32 +1,39 @@
-.content{
-    position: absolute;
-    background-color: white;
-    right: 0;
-    width: 40%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    border-radius: 5px 0 0 5px;
-
+.content {
+  position: absolute;
+  background-color: white;
+  right: 0;
+  width: 40%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 5px 0 0 5px;
 }
-.btn{
-    position: absolute;
-    display: flex;
-    bottom: 0;
-    right: 0;
-    width: 50%;
+.content input[type="file"] {
+  margin-top: 20px;
+  border: none;
 }
-.btn button{
-    width: 40%;
-    margin: 10px;    
+.content select{
+    padding: 10px;
+    border-radius: 5px;
 }
-.btn .btn_create{
-    background-color: green;
+.btn {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  width: 50%;
 }
-.btn .btn_cancel{
-    background-color: red;
+.btn button {
+  width: 40%;
+  margin: 10px;
 }
-.content button:hover{
-    opacity: 0.9;
+.btn .btn_create {
+  background-color: green;
+}
+.btn .btn_cancel {
+  background-color: red;
+}
+.content button:hover {
+  opacity: 0.9;
 }
