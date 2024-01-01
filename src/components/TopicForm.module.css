@@ -13,9 +13,17 @@
   margin-top: 20px;
   border: none;
 }
-.content select{
+.content ul{
     padding: 10px;
     border-radius: 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.content li{
+  list-style-type: none;
+  padding: 5px;
+  background-color: white;
+  border: none;
 }
 .btn {
   position: absolute;

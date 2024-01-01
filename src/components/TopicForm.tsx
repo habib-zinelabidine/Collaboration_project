@@ -11,7 +11,12 @@ export default function TopicForm({
 }) {
   const { register, handleSubmit } = useForm();
   const [data, setData] = useState("");
+  const [showList, setshowList] = useState(false);
+  const [selectedMembers, setselectedMembers] = useState(["Select members"])
   console.log(data);
+  const handleAddMember = ()=>{
+    
+  }
   return (
     <form
       className={style.content}
@@ -26,11 +31,15 @@ export default function TopicForm({
       <label>Invite members</label>
       <textarea placeholder="email" />
       <label>Add members</label>
-      <select>
-        <option>Select member</option>
-        <option>Habib</option>
-        <option>Amine</option>
-      </select>
+      <ul onClick={() => setshowList(!showList)}>
+        {selectedMembers}
+        {showList && (
+          <>
+            <li>Habib</li>
+            <li>Amine</li>
+          </>
+        )}
+      </ul>
       <input type="file" {...register("imageUrl")} />
       <div className={style.btn}>
         <button type="submit" className={style.btn_create}>
