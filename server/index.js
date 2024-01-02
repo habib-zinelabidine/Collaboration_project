@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import authRouter from './routes/auth.router.js'
-
+import cors from 'cors'
 dotenv.config();
 
 mongoose
@@ -15,4 +15,14 @@ app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
 app.use(express.json());
+app.use(cors());
 app.use("/api/auth",authRouter);
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  return res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});

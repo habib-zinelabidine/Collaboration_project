@@ -20,17 +20,53 @@ export default function Discussion() {
       </div>
       <div className={style.discussion}>
         <div className={style.discussion_content}>
-          <div className={style.message}>
-            <img src="https://www.georgetown.edu/wp-content/uploads/2022/02/Jkramerheadshot-scaled-e1645036825432-1050x1050-c-default.jpg" />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit,
-              laboriosam!
-            </p>
+          <div className={style.person_info}>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/1200px-Pierre-Person.jpg" />
+            <h1>Habib</h1>
           </div>
-          <input type="text" placeholder="Type your message" />
-          <button>
-            <FaPaperPlane />
-          </button>
+          <div className={style.message}>
+            <div className={style.personal_message}>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Impedit, laboriosam! Lorem ipsum 
+              </p>
+            </div>
+            <div className={style.personal_message}>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Impedit, laboriosam! Lorem ipsum dolor sit amet consectetur
+                adipisicing elit. Amet, dolor.
+              </p>
+            </div>
+            <div className={style.personal_message}>
+              <p>
+                Lorem ipsum dolor sit 
+              </p>
+            </div>
+            <div className={style.personal_message}>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Impedit,
+              </p>
+            </div>
+            <div className={style.personal_message}>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Impedit, laboriosam!
+              </p>
+            </div>
+            <div className={style.personal_message}>
+              <p>
+                Lorem ipsum dolor sit
+              </p>
+            </div>
+          </div>
+          <div className={style.send_message}>
+            <input type="text" placeholder="Type your message" />
+            <button>
+              <FaPaperPlane />
+            </button>
+          </div>
         </div>
         <div className={style.discussion_people}>
           <img src="https://www.georgetown.edu/wp-content/uploads/2022/02/Jkramerheadshot-scaled-e1645036825432-1050x1050-c-default.jpg" />

@@ -10,6 +10,9 @@
   min-height: 100vh;
   align-items: center;
 }
+.error_message{
+  color: red;
+}
 form {
   width: 400px;
   background-color: rgba(0, 0, 0, 0.129);
@@ -32,7 +35,7 @@ label {
   font-size: 1rem;
 }
 input[type="email"],
-input[type="password"] {
+input[type="password"],input[type="text"] {
   padding: 10px;
   border-radius: 5px;
   width: 100%;

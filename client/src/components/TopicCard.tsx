@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import style from "./TopicCard.module.css";
 
-export default function TopicCard({ topicName, description, imageUrl }: any) {
+export default function TopicCard({id, topicName, description, imageUrl }: any) {
+  const navigate = useNavigate();
+
   return (
     <>
-      <div className={style.card}>
+      <div className={style.card} onClick={()=>navigate(`/home/${id}`)}>
         <div className={style.image}>
           <img alt="topic image"
           src={imageUrl}/>

@@ -5,7 +5,9 @@ import SideBar from "./components/SideBar";
 import style from "./HomePage.module.css";
 import PopUp from "../../components/PopUp";
 import TopicForm from "../../components/TopicForm";
+import { useNavigate } from "react-router-dom";
 export default function HomePage() {
+  const navigate = useNavigate();
   const topicDetails = [
     {
       id: 1,
@@ -98,6 +100,7 @@ export default function HomePage() {
           {formData.map((topic, index) => (
             <TopicCard
               key={index}
+              id={index}
               topicName={topic.topicName}
               description={topic.description}
               imageUrl = {topic.imageUrl}
