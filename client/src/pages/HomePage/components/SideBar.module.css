@@ -5,24 +5,30 @@
   height: 100vh;
   border-right: 2px solid #33333f;
 }
-h3 {
-    color: #7eb7b0;
+.container h3 {
+    color: white;
   display: flex;
   margin: 10px;
   padding: 10px;
 }
-span{
-    padding-left: 10px;
-    font-size: 15px;
+.container Link{
+    text-decoration: none;
+    color: white;
 }
-li{
+a{color: white;
+text-decoration: none;}
+.container ul{
+    text-decoration: none;
+}
+.container li{
     cursor: pointer;
 }
-li:hover,li:active{
+.container li:hover,.container li:active{
     background-color: #33333f;
     border-right: 2px solid #7eb7b0;
 }
-h1{
+.container h1,h2{
     font-size: 20px;
-    margin: 10px;
+    margin: 20px;
+    color: white;
 }

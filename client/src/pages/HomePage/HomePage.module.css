@@ -10,6 +10,11 @@
 }
 .topic_container{
   width: 100%;
+
+}
+.topic_container h1{
+  color: white;
+  margin-left: 20px;
 }
 .search{
   display: flex;
@@ -29,6 +34,13 @@
   border: none;
   color: white;
   margin: 0 10px;
+}
+.search button{
+  background-color: #7eb7b0;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  color: white;
 }
 .search  option{
   padding: 20px;
