@@ -1,0 +1,45 @@
+.container{
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 85% 15%;
+}
+.content{
+    padding: 20px;
+}
+.topic_disccussion{
+    
+    overflow: auto;
+}
+.topic_disccussion h1{
+    color: white;
+    margin-bottom: 20px;
+}
+.topic_disccussion p{
+    color: white;
+}
+.container img{
+    height: 30vh;
+    width: 100%;
+}
+.discussion{
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+.discussion p {
+    background-color: #57575d;
+    padding: 10px;
+    border-radius: 5px;
+}
+.discussion img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+.message{
+    width: 100%;
+    border-radius: 5px;
+    overflow: auto;
+    background-color: #57575d;
+    color: white;
+}

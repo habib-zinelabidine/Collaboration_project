@@ -1,45 +1,25 @@
-import { FaHome } from "react-icons/fa";
-import { FaList } from "react-icons/fa";
-import { FaPeopleCarry} from "react-icons/fa";
-import { FaConnectdevelop} from "react-icons/fa";
-import { FaCog} from "react-icons/fa";
-import style from './SideBar.module.css'
+import { Link } from "react-router-dom";
+import style from "./SideBar.module.css";
 
-export default function SideBar() {
+export default function SideBar({ topics }) {
   return (
     <div className={style.container}>
+      <Link to={"/home"}>
         <h1>Collabory</h1>
+      </Link>
+      <h2>Topics</h2>
       <ul>
-        <li>
-          <h3>
-            <FaHome />
-            <span>Home</span>
-          </h3>
-        </li>
-        <li>
-          <h3>
-            <FaList />
-            <span>Projects</span>
-          </h3>
-        </li>
-        <li>
-          <h3>
-            <FaPeopleCarry />
-            <span>Teams</span>
-          </h3>
-        </li>
-        <li>
-          <h3>
-            <FaConnectdevelop />
-            <span>Integration</span>
-          </h3>
-        </li>
-        <li>
-          <h3>
-            <FaCog />
-            <span>Settings</span>
-          </h3>
-        </li>
+        {topics.map(({ id, description, imageUrl, topicName }) => (
+          <Link
+            to={`/home/topic/${id}`}
+            state={{ id, description, imageUrl, topicName }}
+            key={id}
+          >
+            <li >
+              <h3>#{topicName}</h3>
+            </li>
+          </Link>
+        ))}
       </ul>
     </div>
   );
