@@ -1,6 +1,6 @@
 .content {
   position: absolute;
-  background-color: white;
+  background-color: var(--text-color);
   right: 0;
   width: 40%;
   height: 100vh;
@@ -16,13 +16,13 @@
 .content ul{
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid black;
+    border: 1px solid var(--text-color);
     cursor: pointer;
 }
 .content li{
   list-style-type: none;
   padding: 5px;
-  background-color: white;
+  background-color: var(--text-color);
   border: none;
 }
 .btn {

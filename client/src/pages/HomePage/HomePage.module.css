@@ -13,7 +13,7 @@
 
 }
 .topic_container h1{
-  color: white;
+  color: var(--text-color);
   margin-left: 20px;
 }
 .search{
@@ -28,7 +28,7 @@
 }
 .search select{
   padding: 10px;
-  background-color: #7eb7b0;
+  background-color: var(--button-background-color);
   border-radius: 5px;
   outline: none;
   border: none;
@@ -36,7 +36,7 @@
   margin: 0 10px;
 }
 .search button{
-  background-color: #7eb7b0;
+  background-color: var(--button-background-color);
   padding: 10px;
   border-radius: 5px;
   border: none;
@@ -52,7 +52,7 @@
   border-radius: 5px;
   outline: none;
   border: none;
-  background-color: #57575d;
+  background-color: var(--message-background-color);
   color: white;
   font-size: 1rem;
 }

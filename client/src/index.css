@@ -4,16 +4,25 @@
   --link-color: #543fd7;
 }
 
-html[data-theme='light'] {
+[data-theme="light"] {
   --background-color: #fff;
   --text-color: #121416d8;
+  --content-background-color:#86dbee;
+  --message-background-color: #d5d5e0;
+  --button-background-color : #2060eb;
   --link-color: #543fd7;
 }
 
-html[data-theme='dark'] {
-  --background-color: #212a2e;
+[data-theme="dark"] {
+  --background-color: #1f1f2b;
+  --content-background-color: #33333f;
+  --message-background-color: #57575d;
+  --button-background-color : #7eb7b0;
   --text-color: #F7F8F8;
   --link-color: #828fff;
+}
+*{
+  transition: all 0.3s ease-in-out;
 }
 body {
   background: var(--background-color);

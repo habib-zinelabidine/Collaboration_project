@@ -20,11 +20,11 @@
     padding: 10px;
     border-radius: 5px;
     outline: none;
-    border: 1px solid #33333f;
+    border: 1px solid var(--content-backgroud-color);
 }
 .container input{
     padding: 10px;
     border-radius: 5px;
     outline: none;
-    border: 1px solid #33333f;
+    border: 1px solid var(--content-backgroud-color);
 }
