@@ -1,0 +1,32 @@
+.container {
+  display: grid;
+  grid-template-columns: 5% 95%;
+  margin: 10px;
+}
+.container img {
+  height: 40px;
+  width: 100%;
+  border-radius: 50%;
+  padding: 0 5px;
+}
+.container p {
+  padding: 10px;
+  border-radius: 5px;
+}
+.content {
+  display: grid;
+  grid-template-rows: 20% 80%;
+  border-radius: 5px;
+}
+.userDetails {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: var(--text-color);
+}
+.userDetails h2{
+    margin: 5px;
+}
+.userDetails p{
+    margin: 0;
+}

@@ -6,7 +6,7 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   box-sizing: border-box;
-  background-color: #33333f;
+  background-color: var(--message-background-color);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
 .content h3 {
   text-transform: uppercase;
   font-size: medium;
-  color: white;
+  color: var(--text-color);
   margin: 0;
   padding: 0 10px;
 }
