@@ -1,6 +1,6 @@
 import { useState } from "react";
 import style from "./Discussion.module.css";
-import { FaBell, FaSun, FaPaperPlane, FaMoon } from "react-icons/fa";
+import { FaBell, FaPaperPlane } from "react-icons/fa";
 import DarkMode from "../../../components/DarkMode";
 export default function Discussion() {
   return (
@@ -11,8 +11,10 @@ export default function Discussion() {
           <button>
             <FaBell />
           </button>
-          
+          <div style={{marginRight:"10px"}}>
           <DarkMode />
+
+          </div>
           <img src="https://www.tu-ilmenau.de/unionline/fileadmin/_processed_/0/0/csm_Person_Yury_Prof_Foto_AnLI_Footgrafie__2_.JPG_94f12fbf25.jpg" />
         </div>
       </div>

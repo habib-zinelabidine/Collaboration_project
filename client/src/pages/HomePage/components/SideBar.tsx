@@ -9,11 +9,11 @@ export default function SideBar({ topics }) {
       </Link>
       <h2>Topics</h2>
       <ul>
-        {topics.map(({ id, description, imageUrl, topicName }) => (
+        {topics.map(({ _id, description, imageUrl, topicName }) => (
           <Link
-            to={`/home/topic/${id}`}
-            state={{ id, description, imageUrl, topicName }}
-            key={id}
+            to={`/home/topic/${_id}`}
+            state={{ _id, description, imageUrl, topicName }}
+            key={_id}
           >
             <li >
               <h3>#{topicName}</h3>

@@ -1,29 +1,34 @@
 .content {
   position: absolute;
-  background-color: var(--text-color);
-  right: 0;
+  background-color: white;
+  left: 45%;
   width: 40%;
   height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 20px;
   border-radius: 5px 0 0 5px;
+  color: black;
 }
 .content input[type="file"] {
   margin-top: 20px;
   border: none;
 }
-.content ul{
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid var(--text-color);
-    cursor: pointer;
+.content input{
+  border: 1px solid black;
 }
+.content textarea{
+  border: 1px solid black;
+}
+
 .content li{
   list-style-type: none;
   padding: 5px;
-  background-color: var(--text-color);
   border: none;
+}
+.content ul{
+  border: 1px solid black;
+  border-radius: 5px;
 }
 .btn {
   position: absolute;
@@ -35,6 +40,10 @@
 .btn button {
   width: 40%;
   margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  border: none;
 }
 .btn .btn_create {
   background-color: green;

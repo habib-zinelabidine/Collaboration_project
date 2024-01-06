@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import style from "./TopicCard.module.css";
 
 export default function TopicCard({
-  id,
+  _id,
   topicName,
   description,
   imageUrl,
@@ -12,8 +12,8 @@ export default function TopicCard({
   return (
     <>
       <Link
-        to={`/home/topic/${id}`}
-        state={{ id, description, imageUrl,topicName }}
+        to={`/home/topic/${_id}`}
+        state={{ _id, description, imageUrl,topicName }}
         className={style.card}
       >
         <div className={style.image}>

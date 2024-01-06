@@ -1,54 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PopUp from "../../../components/PopUp";
 import TopicForm from "../../../components/TopicForm";
 import style from "../HomePage.module.css";
 import TopicCard from "../../../components/TopicCard";
+import httpClient from "../../../axios";
 
 export default function TopicsHomePage() {
-  const topics = [
-    {
-      id: 1,
-      topicName: "test1",
-      description: "This is a test for the discussion board.",
-      imageUrl:
-        "https://www.searchenginejournal.com/wp-content/uploads/2021/09/find-whats-trending-6151d8276c49d-sej-1280x720.png",
-    },
-    {
-      id: 2,
-      topicName: "test2",
-      description: "This is a test for the discussion board.",
-      imageUrl:
-        "https://www.searchenginejournal.com/wp-content/uploads/2021/09/find-whats-trending-6151d8276c49d-sej-1280x720.png",
-    },
-    {
-      id: 3,
-      topicName: "test3",
-      description: "This is a test for the discussion board.",
-      imageUrl:
-        "https://www.searchenginejournal.com/wp-content/uploads/2021/09/find-whats-trending-6151d8276c49d-sej-1280x720.png",
-    },
-    {
-      id: 4,
-      topicName: "test4",
-      description: "This is a test for the discussion board.",
-      imageUrl:
-        "https://www.searchenginejournal.com/wp-content/uploads/2021/09/find-whats-trending-6151d8276c49d-sej-1280x720.png",
-    },
-    {
-      id: 5,
-      topicName: "test5",
-      description: "This is a test for the discussion board.",
-      imageUrl:
-        "https://www.searchenginejournal.com/wp-content/uploads/2021/09/find-whats-trending-6151d8276c49d-sej-1280x720.png",
-    },
-    {
-      id: 6,
-      topicName: "test6",
-      description: "This is a test for the discussion board.",
-      imageUrl:
-        "https://www.searchenginejournal.com/wp-content/uploads/2021/09/find-whats-trending-6151d8276c49d-sej-1280x720.png",
-    },
-  ];
+  const [topics, setTopics] = useState([]);
+  useEffect(() => {
+    const fetchTopics = async () => {
+      try {
+        const response = await httpClient.get("/api/topic/findall");
+        setTopics(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchTopics();
+  }, []);
+
   const [showPopUp, setshowPopUp] = useState(false);
   const [formData, setFormData] = useState(topics);
 
@@ -62,20 +32,23 @@ export default function TopicsHomePage() {
       })
     );
   };
+  const handleSubmit = async(data) => {
+   
+    try {
+      const response = await httpClient.post("/api/topic/create",data);
+      setTopics([ ...topics,response.data]);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className={style.topic_container}>
       {
         <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
           <TopicForm
             onClose={() => setshowPopUp(false)}
-            onSubmit={(data: {
-              id: number;
-              topicName: string;
-              description: string;
-              imageUrl: string;
-            }) => {
-              setFormData([...formData, data]);
-            }}
+            onSubmit={handleSubmit} 
           />
         </PopUp>
       }
@@ -92,10 +65,10 @@ export default function TopicsHomePage() {
         <button onClick={handleShowPopUp}>Add topic</button>
       </div>
       <div className={style.options}>
-        {formData.map((topic, index) => (
+        {topics.map((topic, index) => (
           <TopicCard
-            key={index}
-            id={index}
+            key={topic._id}
+            id={topic._id}
             topicName={topic.topicName}
             description={topic.description}
             imageUrl={topic.imageUrl}
