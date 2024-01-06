@@ -2,6 +2,7 @@
   background-color: var(--background-color);
   display: grid;
   grid-auto-rows: 10% 90%;
+  border-left: 1px solid var(--message-background-color);
 }
 .user_details {
   display: flex;
