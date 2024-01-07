@@ -34,15 +34,33 @@ export default function TopicForm({
   const [topicName, setTopicName] = useState("");
   const [description, setdescription] = useState("");
   const [showList, setshowList] = useState(false);
-  console.log(data);
-
+  const [imageUrl, setPostImage] = useState("");
+/*   const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  }; */
+/*   const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setPostImage({ base64 });
+  }; */
   return (
     <form
       className={style.content}
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit({
-          topicName,description
+          topicName,
+          description,
+          imageUrl
         });
       }}
       onClick={(e) => e.stopPropagation()}
@@ -71,8 +89,12 @@ export default function TopicForm({
           isMulti
         />
       </ul>
-      <input type="file" onChange={e=>{console.log(e.target.files[0]);
-      }}/>
+      <input
+        type="file"
+        onChange={(e) => {
+          /* handleFileUpload(e); */
+        }}
+      />
       <div className={style.btn}>
         <button type="submit" className={style.btn_create}>
           Create
