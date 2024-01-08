@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./Discussion.module.css";
 import { FaBell, FaPaperPlane } from "react-icons/fa";
 import DarkMode from "../../../components/DarkMode";
+import { useSelector } from "react-redux";
+
+/* interface User {
+  username : string; 
+} */
 export default function Discussion() {
+  const { username } = useSelector((state) => state.user.value);
+
   return (
     <div className={style.container}>
       <div className={style.user_details}>
-        <h1>habib</h1>
+        <h1>{username}</h1>
         <div className={style.icons}>
           <button>
             <FaBell />
           </button>
-          <div style={{marginRight:"10px"}}>
-          <DarkMode />
-
+          <div style={{ marginRight: "10px" }}>
+            <DarkMode />
           </div>
           <img src="https://www.tu-ilmenau.de/unionline/fileadmin/_processed_/0/0/csm_Person_Yury_Prof_Foto_AnLI_Footgrafie__2_.JPG_94f12fbf25.jpg" />
         </div>
@@ -21,14 +27,14 @@ export default function Discussion() {
       <div className={style.discussion}>
         <div className={style.discussion_content}>
           <div className={style.person_info}>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/1200px-Pierre-Person.jpg" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/1200px-Pierre-Person.jpg" />
             <h1>Habib</h1>
           </div>
           <div className={style.message}>
             <div className={style.personal_message}>
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Impedit, laboriosam! Lorem ipsum 
+                Impedit, laboriosam! Lorem ipsum
               </p>
             </div>
             <div className={style.personal_message}>
@@ -39,9 +45,7 @@ export default function Discussion() {
               </p>
             </div>
             <div className={style.personal_message}>
-              <p>
-                Lorem ipsum dolor sit 
-              </p>
+              <p>Lorem ipsum dolor sit</p>
             </div>
             <div className={style.personal_message}>
               <p>
@@ -56,9 +60,7 @@ export default function Discussion() {
               </p>
             </div>
             <div className={style.personal_message}>
-              <p>
-                Lorem ipsum dolor sit
-              </p>
+              <p>Lorem ipsum dolor sit</p>
             </div>
           </div>
           <div className={style.send_message}>

@@ -73,6 +73,9 @@
   width: 100%;
   align-items: center;
 }
+.container {
+  background-color: var(--background-color);
+}
 .check input {
   margin-right: 10px;
 }
