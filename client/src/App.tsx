@@ -5,9 +5,16 @@ import SignUp from "./pages/Auth/components/SignUpForm";
 import HomePage from "./pages/HomePage/HomePage";
 import TopicDetails from "./pages/TopicDetails/TopicDetails";
 import TopicsHomePage from "./pages/HomePage/components/TopicsHomePage";
-
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "./redux/features/user";
 function App() {
-  
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const user = localStorage.getItem("dataKey");
+dispatch(login(JSON.parse(user)));
+  }, []);
+
   return (
     <Router>
       <Routes>
@@ -15,9 +22,9 @@ function App() {
           <Route path="signup" element={<SignUp />} />
           <Route path="signin" element={<SignIn />} />
         </Route>
-        <Route path="/home" element={<HomePage />} >
-          <Route path="" element={<TopicsHomePage />}/>
-          <Route path="/home/topic/:id" element={<TopicDetails />}/>
+        <Route path="/home" element={<HomePage />}>
+          <Route path="" element={<TopicsHomePage />} />
+          <Route path="/home/topic/:id" element={<TopicDetails />} />
         </Route>
         <Route path="/home/:id" element={<TopicDetails />} />
       </Routes>

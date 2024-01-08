@@ -3,8 +3,11 @@ import style from "./SignIn.module.css";
 import httpClient from "../../../axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../../redux/features/user.tsx";
 
 export default function SignIn() {
+  const dispatch = useDispatch();
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [error, seterror] = useState(false);
@@ -19,8 +22,11 @@ export default function SignIn() {
         email,
         password,
       });
+      localStorage.setItem('dataKey',JSON.stringify(response.data));
+
       console.log(response);
       setLoading(false);
+      dispatch(login({username : response.data.username}))
       navigate("/home");
       seterror(response.data.message);
     } catch (err) {
