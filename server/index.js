@@ -1,10 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import authRouter from './routes/auth.router.js'
-import topicRouter from './routes/topic.router.js'
-import userRouter from './routes/user.router.js'
-import cors from 'cors'
+import authRouter from "./routes/auth.router.js";
+import topicRouter from "./routes/topic.router.js";
+import userRouter from "./routes/user.router.js";
+import cors from "cors";
+import { Server } from "socket.io";
+import { createServer } from "node:http";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 dotenv.config();
 
 mongoose
@@ -12,15 +16,39 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 const app = express();
-const port = process.env.PORT;
-app.listen(process.env.PORT, () => {
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.get("/", (req, res) => {
+  res.sendFile(join(__dirname, "index.html"));
+});
+io.on("connection", (socket) => {
+  socket.on("send-message", (data) => {
+    socket.broadcast.emit("message-from-server", data);
+  });
+  socket.on("start-typing", () => {
+    socket.broadcast.emit("typing-started-from-server");
+  });
+  socket.on("stop-typing", () => {
+    socket.broadcast.emit("typing-stoped-from-server");
+  });
+  socket.on("disconnect", (socket) => {
+    console.log("user left");
+  });
+});
+server.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
 app.use(express.json());
 app.use(cors());
-app.use("/api/auth",authRouter);
-app.use("/api/topic",topicRouter);
-app.use("/api/user",userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/topic", topicRouter);
+app.use("/api/user", userRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
