@@ -4,11 +4,14 @@ import dotenv from "dotenv";
 import authRouter from "./routes/auth.router.js";
 import topicRouter from "./routes/topic.router.js";
 import userRouter from "./routes/user.router.js";
+import discussionRouter from "./routes/discussion.router.js";
 import cors from "cors";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import Topic from "./model/Topic.model.js";
+import Discussion from "./model/Discussion.js";
 dotenv.config();
 
 mongoose
@@ -23,22 +26,26 @@ const io = new Server(server, {
   },
 });
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 app.get("/", (req, res) => {
   res.sendFile(join(__dirname, "index.html"));
 });
 io.on("connection", (socket) => {
   socket.on("send-message", (data) => {
-    socket.broadcast.emit("message-from-server", data);
+    const discussion = new Discussion({
+      message: data.message,
+      topicId: data.topicId,
+    });
+    discussion.save().then(() => {
+      socket.broadcast.emit("message-from-server", data.message);
+    });
   });
-  socket.on("start-typing", () => {
+  socket.on("start-typing", (data) => {
     socket.broadcast.emit("typing-started-from-server");
   });
-  socket.on("stop-typing", () => {
+  socket.on("stop-typing", (data) => {
     socket.broadcast.emit("typing-stoped-from-server");
   });
   socket.on("disconnect", (socket) => {
-    console.log("user left");
   });
 });
 server.listen(process.env.PORT, () => {
@@ -49,6 +56,7 @@ app.use(cors());
 app.use("/api/auth", authRouter);
 app.use("/api/topic", topicRouter);
 app.use("/api/user", userRouter);
+app.use("/api/discussion", discussionRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
