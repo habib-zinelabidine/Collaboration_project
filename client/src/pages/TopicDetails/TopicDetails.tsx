@@ -10,21 +10,33 @@ import "@mdxeditor/editor/style.css";
 import DiscussionCard from "../../components/DiscussionCard";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import httpClient from "../../axios";
 
 export default function TopicDetails() {
   let { state } = useLocation();
   const [socket, setsocket] = useState(null);
   const [message, setmessage] = useState("");
+  const [loadDiscussion, setloadDiscussion] = useState([]);
   const [chat, setChat] = useState([]);
   const [typing, setTyping] = useState(false);
   const [typingTimeOut, setTypingTimeOut] = useState(null)
   useEffect(() => {
     setsocket(io("http://localhost:3000"));
-  }, []);
+    const fetchDiscussion = async () => {
+      try {
+        const response = await httpClient.get(`/api/discussion/${state._id}`);
+        setloadDiscussion(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchDiscussion();
+  }, [loadDiscussion]);
   useEffect(() => {
     if (!socket) return;
     socket.on("message-from-server", (data: { message: any }) => {
-      setChat((prev) => [...prev, data.message]);
+      setChat((prev) => [...prev, data]);
+      
     });
     socket.on("typing-started-from-server", () => {
       setTyping(true);
@@ -36,8 +48,7 @@ export default function TopicDetails() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setmessage("");
-    socket.emit("send-message", { message });
-    console.log(chat);
+    socket.emit("send-message", { message,topicId : state._id });
   };
   const handleInput = (e) => {
     setmessage(e.target.value);
@@ -55,6 +66,9 @@ export default function TopicDetails() {
           <h1>{state.topicName}</h1>
           <p>{state.description}</p>
           <div className={style.discussion}>
+            {loadDiscussion.map((message) => (
+              <DiscussionCard key={Math.random()} message={message.message} />
+            ))}
             {chat.map((message) => (
               <DiscussionCard key={Math.random()} message={message} />
             ))}
