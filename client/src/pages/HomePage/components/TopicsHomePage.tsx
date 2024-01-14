@@ -12,6 +12,7 @@ export default function TopicsHomePage() {
       try {
         const response = await httpClient.get("/api/topic/findall");
         setTopics(response.data);
+        console.log(topics);
       } catch (error) {
         console.log(error);
       }
@@ -32,23 +33,24 @@ export default function TopicsHomePage() {
       })
     );
   };
-  const handleSubmit = async(data) => {
-   
+  const handleSubmit = async (data) => {
     try {
-      const response = await httpClient.post("/api/topic/create",data);
-      setTopics([ ...topics,response.data]);
-      
+      const response = await httpClient.post("/api/topic/create", data);
+      console.log(data);
+
+      setTopics([...topics, response.data]);
+      console.log(topics);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   return (
     <div className={style.topic_container}>
       {
         <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
           <TopicForm
             onClose={() => setshowPopUp(false)}
-            onSubmit={handleSubmit} 
+            onSubmit={handleSubmit}
           />
         </PopUp>
       }
@@ -65,15 +67,7 @@ export default function TopicsHomePage() {
         <button onClick={handleShowPopUp}>Add topic</button>
       </div>
       <div className={style.options}>
-        {topics.map((topic, index) => (
-          <TopicCard
-            key={topic._id}
-            id={topic._id}
-            topicName={topic.topicName}
-            description={topic.description}
-            imageUrl={topic.imageUrl}
-          />
-        ))}
+        <TopicCard topics={topics} />
       </div>
     </div>
   );

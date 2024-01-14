@@ -1,34 +1,41 @@
-
 .container {
   width: 100%;
+  overflow: auto;
   background-color: var(--background-color);
   height: 100vh;
   border-right: 2px solid var(--message-background-color);
 }
 .container h3 {
-    color: var(--text-color);
+  color: var(--text-color);
   display: flex;
   margin: 10px;
   padding: 10px;
 }
-.container Link{
-    text-decoration: none;
-    color: var(--text-color);
+.container Link {
+  text-decoration: none;
+  color: var(--text-color);
 }
-a{color: var(--text-color);
-text-decoration: none;}
-.container ul{
-    text-decoration: none;
+a {
+  color: var(--text-color);
+  text-decoration: none;
 }
-.container li{
-    cursor: pointer;
+.container ul {
+  text-decoration: none;
 }
-.container li:hover,.container li:active{
-    background-color: var(--content-backgroud-color);
-    border-right: 2px solid var(--button-background-color);
+.container li {
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.container h1,h2{
-    font-size: 20px;
-    margin: 20px;
-    color: var(--text-color);
+.container li:hover,
+.container li:active {
+  background-color: var(--content-backgroud-color);
+  border-right: 2px solid var(--button-background-color);
+}
+.container h1,
+h2 {
+  font-size: 20px;
+  margin: 20px;
+  color: var(--text-color);
 }

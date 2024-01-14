@@ -61,7 +61,7 @@ export default function TopicDetails() {
   return (
     <form className={style.container} onSubmit={handleSubmit}>
       <div className={style.topic_disccussion}>
-        <img src={state.imageUrl} />
+        <img src={ "http://localhost:3000/" +state.imageUrl} />
         <div className={style.content}>
           <h1>{state.topicName}</h1>
           <p>{state.description}</p>

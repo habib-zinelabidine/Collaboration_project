@@ -34,14 +34,9 @@ export default function TopicForm({
   const [topicName, setTopicName] = useState("");
   const [description, setdescription] = useState("");
   const [showList, setshowList] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [imageUrl, setimageUrl] = useState(null);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-  const imageUrl = new FormData();
-  imageUrl.append("image", selectedFile);
-
+  
   /*   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -96,7 +91,12 @@ export default function TopicForm({
           isMulti
         />
       </ul>
-      <input type="file" onChange={handleFileChange} />{" "}
+      <input
+        type="file"
+        onChange={(event) => {
+          setimageUrl(event.target.files[0]);
+        }}
+      />
       <div className={style.btn}>
         <button type="submit" className={style.btn_create}>
           Create
