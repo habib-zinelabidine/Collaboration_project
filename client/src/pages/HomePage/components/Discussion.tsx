@@ -3,13 +3,24 @@ import style from "./Discussion.module.css";
 import { FaBell, FaPaperPlane } from "react-icons/fa";
 import DarkMode from "../../../components/DarkMode";
 import { useSelector } from "react-redux";
+import httpClient from "../../../axios";
+import { useNavigate } from "react-router-dom";
 
-/* interface User {
-  username : string; 
-} */
+
 export default function Discussion() {
+  const [showSettings, setshowSettings] = useState(false);
+  const navigate = useNavigate();
   const { username } = useSelector((state) => state.user.value);
-
+  const handleLogout = async () => {
+    try {
+      const response = await httpClient.get("/api/auth/logout");
+      if (response.status === 200) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className={style.container}>
       <div className={style.user_details}>
@@ -21,7 +32,19 @@ export default function Discussion() {
           <div style={{ marginRight: "10px" }}>
             <DarkMode />
           </div>
-          <img src="https://www.tu-ilmenau.de/unionline/fileadmin/_processed_/0/0/csm_Person_Yury_Prof_Foto_AnLI_Footgrafie__2_.JPG_94f12fbf25.jpg" />
+          <div onClick={() => setshowSettings(!showSettings)}>
+            <img src="https://www.tu-ilmenau.de/unionline/fileadmin/_processed_/0/0/csm_Person_Yury_Prof_Foto_AnLI_Footgrafie__2_.JPG_94f12fbf25.jpg" />
+          </div>
+          {showSettings && (
+            <div className={style.settings}>
+              <ul>
+                <li>Settings</li>
+                <li style={{ color: "red" }} onClick={handleLogout}>
+                  Logout
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
       <div className={style.discussion}>

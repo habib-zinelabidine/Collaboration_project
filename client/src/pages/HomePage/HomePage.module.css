@@ -7,9 +7,13 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+
 }
 .topic_container{
   width: 100%;
+  height: 100vh;
+  overflow: auto;
 
 }
 .topic_container h1{
