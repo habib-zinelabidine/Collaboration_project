@@ -34,8 +34,7 @@
   color: white;
   font-size: 1rem;
 }
-.container input[type="email"],
-.container input[type="password"],input[type="text"] {
+.container input {
   padding: 10px;
   border-radius: 5px;
   width: 100%;
