@@ -11,7 +11,7 @@ export default function SignIn() {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [error, seterror] = useState(false);
-  const [errorMessage, seterrorMessage] = useState("")
+  const [errorMessage, seterrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -22,19 +22,18 @@ export default function SignIn() {
         email,
         password,
       });
-      localStorage.setItem('dataKey',JSON.stringify(response.data));
+      localStorage.setItem("dataKey", JSON.stringify(response.data));
 
       console.log(response);
       setLoading(false);
-      dispatch(login({username : response.data.username}))
+      dispatch(login(response.data));
       navigate("/home");
       seterror(response.data.message);
     } catch (err) {
       setLoading(false);
-      seterror(true);      
+      seterror(true);
       seterrorMessage(err.response.data.message);
     }
-    
   };
   return (
     <div className={style.container}>
@@ -63,7 +62,9 @@ export default function SignIn() {
           <p>Keep me signed in</p>
         </div>
         {error && <p className={style.error_message}>{errorMessage}</p>}
-        <button className={style.btn}>{loading ? "Loading..." : "Login"}</button>
+        <button className={style.btn}>
+          {loading ? "Loading..." : "Login"}
+        </button>
         <p>
           {`Don't have an account?`}{" "}
           <Link to="/signup" className={style.create_account}>

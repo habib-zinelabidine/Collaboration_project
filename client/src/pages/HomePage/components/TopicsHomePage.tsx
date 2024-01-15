@@ -34,9 +34,15 @@ export default function TopicsHomePage() {
     );
   };
   const handleSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append("topicName", data.topicName);
+    formData.append("description", data.description);
+    formData.append("imageUrl", data.imageUrl);
     try {
-      const response = await httpClient.post("/api/topic/create", data);
-      console.log(data);
+      const response = await httpClient.post("/api/topic/create", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(formData);
 
       setTopics([...topics, response.data]);
       console.log(topics);

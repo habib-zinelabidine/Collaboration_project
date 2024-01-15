@@ -69,15 +69,18 @@ export default function TopicDetails() {
             {loadDiscussion.map((message) => (
               <DiscussionCard key={Math.random()} message={message.message} />
             ))}
-            {chat.map((message) => (
-              <DiscussionCard key={Math.random()} message={message} />
-            ))}
+           {/*  {chat.map((message) => (
+              <DiscussionCard key={Math.random()} message={message.message} />
+            ))} */}
           </div>
         </div>
       {typing ? "typing..." : ""}
       </div>
+      <div className={style.send_message}>
+
       <input type="text" onChange={handleInput} value={message} />
       <button type="submit">send</button>
+      </div>
       {/* <div className={style.message}>
         <MDXEditor markdown={"# Hello World"} plugins={[
         toolbarPlugin({

@@ -1,41 +1,62 @@
-.container{
-    height: 100vh;
-    display: grid;
-    grid-template-rows: 85% 15%;
+.container {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 90% 10%;
 }
-.content{
-    padding: 20px;
+.content {
+  padding: 20px;
 }
-.topic_disccussion{
-    
-    overflow: auto;
+.topic_disccussion {
+  overflow: auto;
 }
-.topic_disccussion h1{
-    color: var(--text-color);
-    margin-bottom: 20px;
+.topic_disccussion h1 {
+  color: var(--text-color);
+  margin-bottom: 20px;
 }
-.topic_disccussion p{
-    color: var(--text-color);
+.topic_disccussion p {
+  color: var(--text-color);
 }
-.container img{
-    height: 30vh;
-    width: 100%;
+.container img {
+  height: 30vh;
+  width: 100%;
 }
-.discussion{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 20px;
+.discussion {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 20px;
 }
 
-.message{
-    width: 100%;
-    border-radius: 5px;
-    overflow: auto;
-    background-color: var(--message-backgroung-color);
-    color: var(--text-color);
+.message {
+  width: 100%;
+  border-radius: 5px;
+  overflow: auto;
+  background-color: var(--message-backgroung-color);
+  color: var(--text-color);
 }
-.container input{
-    background-color: gray;
-    
+.send_message{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 10px;
+}
+.send_message input{
+    width: 80%;
+    height: 80%;
+    background-color: var(--content-background-color);
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    padding: 10px;
+
+}
+.send_message button{
+    width: 15%;
+    height: 70%;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: var(--button-background-color);
+    color: var(--text-color);
 }

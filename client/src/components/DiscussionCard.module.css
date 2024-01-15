@@ -31,5 +31,5 @@
     margin: 0;
 }
 .message p{
-  color:black
+  color: var(--text-color)
 }
