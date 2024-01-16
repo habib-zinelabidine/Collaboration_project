@@ -12,7 +12,6 @@ export default function TopicsHomePage() {
       try {
         const response = await httpClient.get("/api/topic/findall");
         setTopics(response.data);
-        console.log(topics);
       } catch (error) {
         console.log(error);
       }

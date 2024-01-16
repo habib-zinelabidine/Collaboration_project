@@ -1,7 +1,10 @@
 .container {
   background-color: var(--background-color);
   display: grid;
-  grid-auto-rows: 10% 90%;
+  grid-auto-rows: 10% 10% 90%;
+  position: relative;
+  height: 100vh;
+
   border-left: 1px solid var(--message-background-color);
 }
 .user_details {
@@ -21,25 +24,22 @@
 }
 .discussion {
   display: grid;
-  grid-template-columns: 90% 10%;
+  grid-template-columns: 80% 20%;
+  height: 80vh;
+
 }
 .discussion_content {
   display: grid;
   grid-template-rows: 10% 80% 10%;
-  margin: 20px;
-  height: 80vh;
+  margin: 10px;
   background-color: var(--background-color);
-  border-radius: 10px;
-  justify-content: space-between;
   overflow: hidden;
 }
 .person_info {
   display: flex;
-  justify-content: start;
-  align-items: center;
+  justify-content: space-between;
+ align-items: center;
   padding: 10px;
-  position: sticky;
-  top: 0;
   background-color: var(--background-color);
   border-bottom: 1px solid var(--message-background-color);
 }
@@ -54,7 +54,15 @@
   font-size: 1.2rem;
   margin-left: 10px;
 }
-
+.person_info button {
+  background-color: var(--message-background-color);
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  padding: 5px;
+  color: var(--text-color);
+  cursor: pointer;
+}
 *::-webkit-scrollbar {
   width: 5px;
 }
@@ -134,16 +142,14 @@
 .discussion_people {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  right: 10px;
-  margin-top: 20px;
+  margin: 10px;
 }
 .discussion_people img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
-  right: 10px;
-  margin: 5px 0;
+  margin: 10px 0;
+  cursor: pointer;
 }
 .settings {
   position: absolute;
@@ -167,6 +173,74 @@
   padding: 10px;
   cursor: pointer;
 }
-.settings li:hover{
+.settings li:hover {
   background-color: var(--content-background-color);
+}
+.users_container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+.users_container:hover {
+  background-color: var(--content-background-color);
+  border-radius: 5px;
+}
+.users_showDiscussion {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin: 10px;
+  right: 10px;
+}
+.discussion_people h2 {
+  overflow: hidden;
+}
+.contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.contact img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.contact button{
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: var(--message-background-color);
+  border: none;
+  outline: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.search_friend input{
+  width: 100%;
+  border-radius: 5px;
+
+}
+.users_list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+.users_list img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.users_icon {
+  display: flex;
+  flex-direction: column;
+}
+.users_icon img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
 }

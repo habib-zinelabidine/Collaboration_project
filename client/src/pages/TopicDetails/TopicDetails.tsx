@@ -10,7 +10,7 @@ import "@mdxeditor/editor/style.css";
 import DiscussionCard from "../../components/DiscussionCard";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import httpClient from "../../axios";
+import httpClient, { baseURL } from "../../axios";
 
 export default function TopicDetails() {
   let { state } = useLocation();
@@ -21,11 +21,12 @@ export default function TopicDetails() {
   const [typing, setTyping] = useState(false);
   const [typingTimeOut, setTypingTimeOut] = useState(null)
   useEffect(() => {
-    setsocket(io("http://localhost:3000"));
+    setsocket(io(baseURL));
     const fetchDiscussion = async () => {
       try {
         const response = await httpClient.get(`/api/discussion/${state._id}`);
         setloadDiscussion(response.data);
+        
       } catch (error) {
         console.log(error);
       }
@@ -61,7 +62,7 @@ export default function TopicDetails() {
   return (
     <form className={style.container} onSubmit={handleSubmit}>
       <div className={style.topic_disccussion}>
-        <img src={ "http://localhost:3000/" +state.imageUrl} />
+        <img src={ baseURL +state.imageUrl} />
         <div className={style.content}>
           <h1>{state.topicName}</h1>
           <p>{state.description}</p>
