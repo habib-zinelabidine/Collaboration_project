@@ -8,6 +8,7 @@ export const userSlice = createSlice({
     login: (state, action) => {
       state.currentUser = action.payload;
     },
+    
   },
 });
 

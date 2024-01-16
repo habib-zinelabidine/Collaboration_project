@@ -1,36 +1,32 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import style from "./Profile.module.css";
 import { useRef, useState } from "react";
 import httpClient from "../../axios";
-import { data } from "jquery";
+import { login } from "../../redux/features/user";
 
 export default function Profile() {
   const { currentUser } = useSelector((state) => state["user"]);
   const fileRef = useRef(null);
+  const dispatch = useDispatch();
 
-  const [username, setusername] = useState("");
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
-  const [avatar, setavatar] = useState(null);
+  console.log(currentUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("username", username);
-    formData.append("email", email);
-    formData.append("avatar", avatar);
-    console.log(formData);
+    const formData = new FormData(e.target);
+    console.log(formData.get("username"));
+    console.log(currentUser._id);
+
     try {
       const response = await httpClient.patch(
-        `/api/user/update/${currentUser._id}`,formData, {
+        `/api/user/update/${currentUser._id}`,
+        formData,
+        {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      dispatch(login(response.data));
       localStorage.setItem("dataKey", JSON.stringify(response.data));
-
-      console.log(response.data);
-      console.log(currentUser._id);
-      console.log(username);
     } catch (error) {
       console.log(error);
     }
@@ -40,12 +36,7 @@ export default function Profile() {
     currentUser! && (
       <form className={style.container} onSubmit={handleSubmit}>
         <div className={style.content}>
-          <input
-            type="file"
-            ref={fileRef}
-            hidden
-            onChange={(e) => setavatar(e.target.files[0])}
-          />
+          <input type="file" ref={fileRef} hidden name="avatar" />
           <img
             onClick={() => fileRef.current.click()}
             src={currentUser.avatar}
@@ -54,21 +45,20 @@ export default function Profile() {
             type="text"
             placeholder="username"
             defaultValue={currentUser.username}
-            onChange={(e) => setusername(e.target.value)}
+            name="username"
             id={currentUser.username}
-
           />
           <input
             type="email"
             placeholder="email"
+            name="email"
             defaultValue={currentUser.email}
-            onChange={(e) => setemail(e.target.value)}
           />
           <input
             type="password"
             placeholder="password"
+            name="password"
             defaultValue={currentUser.password}
-            onChange={(e) => setpassword(e.target.value)}
           />
           <button>Save</button>
         </div>
