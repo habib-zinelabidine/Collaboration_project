@@ -14,8 +14,6 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    console.log(formData.get("username"));
-    console.log(currentUser._id);
 
     try {
       const response = await httpClient.patch(
@@ -54,12 +52,12 @@ export default function Profile() {
             name="email"
             defaultValue={currentUser.email}
           />
-          <input
+          {/* <input
             type="password"
             placeholder="password"
             name="password"
             defaultValue={currentUser.password}
-          />
+          /> */}
           <button>Save</button>
         </div>
       </form>

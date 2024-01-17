@@ -1,5 +1,6 @@
 import Topic from "../model/Topic.model.js";
-import User from "../model/user.model.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const createTopic = async (req, res, next) => {
   try {
@@ -8,7 +9,7 @@ export const createTopic = async (req, res, next) => {
       description: req.body.description,
     });
     if (req.file) {
-      topic.imageUrl = req.file.path;
+      topic.imageUrl = process.env.baseUrl + process.env.PORT + "/"+ req.file.path;
     }
     topic
       .save()
