@@ -13,7 +13,7 @@ export default function TopicCard({ topics }: any) {
           className={style.card}
         >
           <div className={style.image}>
-            <img alt="topic image" src={"http://localhost:3000/" + imageUrl} />
+            <img alt="topic image" src={imageUrl} />
           </div>
           <div className={style.content}>
             <h3 className={style.titme}>{topicName}</h3>
