@@ -20,7 +20,11 @@
 .content textarea{
   border: 1px solid black;
 }
+.select{
+  border: 1px solid black;
+  border-radius: 5px;
 
+}
 .content li{
   list-style-type: none;
   padding: 5px;

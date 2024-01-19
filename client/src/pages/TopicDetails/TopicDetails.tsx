@@ -11,6 +11,7 @@ import DiscussionCard from "../../components/DiscussionCard";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import httpClient, { baseURL } from "../../axios";
+import { useSelector } from "react-redux";
 
 export default function TopicDetails() {
   let { state } = useLocation();
@@ -19,25 +20,27 @@ export default function TopicDetails() {
   const [loadDiscussion, setloadDiscussion] = useState([]);
   const [chat, setChat] = useState([]);
   const [typing, setTyping] = useState(false);
-  const [typingTimeOut, setTypingTimeOut] = useState(null)
+  const [typingTimeOut, setTypingTimeOut] = useState(null);
+  const { currentUser } = useSelector((state) => state["user"]);
+
   useEffect(() => {
     setsocket(io(baseURL));
     const fetchDiscussion = async () => {
       try {
         const response = await httpClient.get(`/api/discussion/${state._id}`);
         setloadDiscussion(response.data);
-        
       } catch (error) {
         console.log(error);
       }
     };
     fetchDiscussion();
-  }, [loadDiscussion]);
+  }, [state._id]);
+
   useEffect(() => {
     if (!socket) return;
+
     socket.on("message-from-server", (data: { message: any }) => {
-      setChat((prev) => [...prev, data]);
-      
+      setloadDiscussion((prev) => [...prev, data]);
     });
     socket.on("typing-started-from-server", () => {
       setTyping(true);
@@ -49,15 +52,17 @@ export default function TopicDetails() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setmessage("");
-    socket.emit("send-message", { message,topicId : state._id });
+    socket.emit("send-message", { message, topicId: state._id });
   };
   const handleInput = (e) => {
     setmessage(e.target.value);
     socket.emit("start-typing");
-    if(typingTimeOut) clearTimeout(typingTimeOut);
-    setTypingTimeOut(setTimeout(()=>{
-      socket.emit("stop-typing")
-    },1000))
+    if (typingTimeOut) clearTimeout(typingTimeOut);
+    setTypingTimeOut(
+      setTimeout(() => {
+        socket.emit("stop-typing");
+      }, 1000)
+    );
   };
   return (
     <form className={style.container} onSubmit={handleSubmit}>
@@ -68,19 +73,15 @@ export default function TopicDetails() {
           <p>{state.description}</p>
           <div className={style.discussion}>
             {loadDiscussion.map((message) => (
-              <DiscussionCard key={Math.random()} message={message.message} />
+              <DiscussionCard key={Math.random()} message={message.message} discussion={message.createdAt}/>
             ))}
-           {/*  {chat.map((message) => (
-              <DiscussionCard key={Math.random()} message={message.message} />
-            ))} */}
           </div>
         </div>
-      {typing ? "typing..." : ""}
       </div>
+      <div>{typing ? `${currentUser.username} is typing...` : ""}</div>
       <div className={style.send_message}>
-
-      <input type="text" onChange={handleInput} value={message} />
-      <button type="submit">send</button>
+        <input type="text" onChange={handleInput} value={message} />
+        <button type="submit">send</button>
       </div>
       {/* <div className={style.message}>
         <MDXEditor markdown={"# Hello World"} plugins={[

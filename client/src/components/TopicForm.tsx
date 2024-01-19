@@ -3,6 +3,7 @@ import Select from "react-select";
 
 import style from "./TopicForm.module.css";
 import httpClient from "../axios";
+import { useSelector } from "react-redux";
 
 export default function TopicForm({
   onClose,
@@ -11,49 +12,23 @@ export default function TopicForm({
   onClose: () => void;
   onSubmit: any;
 }) {
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await httpClient.get("/api/user/users");
-        setUsers(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUsers();
-  }, []);
-  const options = users.map((user) => ({
+  const { currentUsers } = useSelector((state) => state["users"]);
+
+  const options = currentUsers.map((user) => ({
     value: user.username,
     label: user.username,
   }));
+  const usersEmail = currentUsers.map((user) => ({
+    value: user.email,
+    label: user.email,
+  }));
 
   const [selectedOption, setSelectedOption] = useState(null);
-
-  const [data, setData] = useState([]);
   const [topicName, setTopicName] = useState("");
   const [description, setdescription] = useState("");
   const [showList, setshowList] = useState(false);
   const [imageUrl, setimageUrl] = useState(null);
 
-  
-  /*   const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  }; */
-  /*   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    setPostImage({ base64 });
-  }; */
   return (
     <form
       className={style.content}
@@ -81,16 +56,22 @@ export default function TopicForm({
         onChange={(e) => setdescription(e.target.value)}
       />
       <label>Invite members</label>
-      <textarea placeholder="email" />
+      <Select
+        className={style.select}
+        defaultValue={selectedOption}
+        onChange={setSelectedOption}
+        options={usersEmail}
+        isMulti
+      />
       <label>Add members</label>
-      <ul onClick={() => setshowList(!showList)}>
-        <Select
-          defaultValue={selectedOption}
-          onChange={setSelectedOption}
-          options={options}
-          isMulti
-        />
-      </ul>
+      <Select
+        className={style.select}
+        defaultValue={selectedOption}
+        onChange={setSelectedOption}
+        options={options}
+        isMulti
+      />
+
       <input
         type="file"
         onChange={(event) => {

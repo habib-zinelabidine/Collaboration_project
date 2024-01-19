@@ -101,6 +101,7 @@
   border: none;
   background-color: var(--button-background-color);
   color: white;
+  cursor: pointer;
 }
 .personal_message {
   margin: 10px;
@@ -108,6 +109,10 @@
 
 .message {
   margin: 10px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+
 }
 .message p {
   background-color: var(--content-background-color);
