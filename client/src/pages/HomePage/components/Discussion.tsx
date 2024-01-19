@@ -18,13 +18,11 @@ export default function Discussion() {
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
   const [messages, setmessages] = useState("");
-  const [discussion, setDiscussion] = useState([]);
   const [friendId, setfriendId] = useState();
+  const [users, setusers] = useState([]);
   const [discussionChat, setdiscussionChat] = useState([]);
   const [searchContact, setsearchContact] = useState(false);
   const [showDiscussion, setshowDiscussion] = useState(false);
-  const [OnlineUsers, setOnlineUsers] = useState([]);
-  const [Chat, setChat] = useState([])
   const dispatch = useDispatch();
   useEffect(() => {
     setsocket(io(baseURL));
@@ -32,11 +30,8 @@ export default function Discussion() {
   }, []);
   useEffect(() => {
     if (!socket) return;
-    socket.on("private-message-from-server", (data: { message: any }) => {
-      setChat((prev) => [...prev, data]);
-      console.log(Chat);
-      
-      
+    socket.on("private-message-from-server", (data: { text: any }) => {
+      setdiscussionChat((prev) => [...prev, data]);
     });
   }, [socket]);
   const handleLogout = async () => {
@@ -60,11 +55,6 @@ export default function Discussion() {
         `/api/message/${currentUser._id}/${data._id}`
       );
       setdiscussionChat(response.data);
-      socket.emit("private-message", {
-        senderId: currentUser._id,
-        receiverId: friendId,
-        text: messages,
-      });
     } catch (error) {
       console.log(error);
     }
@@ -72,18 +62,22 @@ export default function Discussion() {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     setmessages("");
-    try {
-      const response = await httpClient.post("/api/message", {
-        senderId: currentUser._id,
-        receiverId: friendId,
-        text: messages,
-      });
-      setDiscussion(response.data);
-      
-    } catch (error) {
-      console.log(error);
-    }
+    socket.emit("private-message", {
+      senderId: currentUser._id,
+      receiverId: friendId,
+      text: messages,
+    });
   };
+/*   const handleSearch = (e) => {
+    setusers(
+      currentUsers.filter((user) => {
+        user.username === e.target.value;
+        console.log(user.username === e.target.value);
+      })
+    );
+  };
+  console.log(users); */
+  
 
   return (
     currentUser! && (
@@ -124,7 +118,11 @@ export default function Discussion() {
           <div className={style.search_contact}>
             {searchContact ? (
               <div className={style.search_friend}>
-                <input type="text" placeholder="Search friend" />
+                <input
+                  type="text"
+                  placeholder="Search friend"
+                  // onChange={handleSearch}
+                />
                 <button
                   onClick={() => {
                     setsearchContact(false);
@@ -155,21 +153,21 @@ export default function Discussion() {
               <div className={style.message}>
                 <div className={style.personal_message}>
                   {discussionChat.map((msg) => (
-                    <p key={msg._id}>{msg.text}</p>
+                    <p key={Math.random()}>{msg.text}</p>
                   ))}
                 </div>
               </div>
-              <div className={style.send_message}>
+              <form className={style.send_message} onSubmit={handleSendMessage}>
                 <input
                   type="text"
                   placeholder="Type your message"
                   onChange={(e) => setmessages(e.target.value)}
                   value={messages}
                 />
-                <button onClick={handleSendMessage}>
+                <button type="submit">
                   <FaPaperPlane />
                 </button>
-              </div>
+              </form>
             </div>
             <div className={style.discussion_people}>
               {currentUsers! &&
@@ -198,7 +196,7 @@ export default function Discussion() {
                   key={data._id}
                 >
                   <img src={data.avatar} title={data.username} />
-                  <h2>{showDiscussion! || data.username}</h2>
+                  <h2>{data.username}</h2>
                 </div>
               ))}
           </div>

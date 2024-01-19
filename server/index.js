@@ -32,11 +32,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 app.get("/", (req, res) => {
   res.sendFile(join(__dirname, "index.html"));
 });
-let activeUsers = [];
 io.on("connection", (socket) => {
   console.log("user connected");
   socket.on('chat message', (msg) => {
-    socket.emit('chat message', msg);
+    io.emit('chat message', msg);
   });
   socket.on("send-message", (data) => {
     const discussion = new Discussion({
@@ -44,7 +43,7 @@ io.on("connection", (socket) => {
       topicId: data.topicId,
     });
     discussion.save().then(() => {
-      socket.broadcast.emit("message-from-server", data.message);
+      io.emit("message-from-server", data);
     });
   });
   socket.on("private-message",(data)=>{
@@ -54,30 +53,19 @@ io.on("connection", (socket) => {
       text: data.text
     })
     privateMessage.save().then(()=>{
-      socket.emit("private-message-from-server",data.message)
+      io.emit("private-message-from-server",data)
     })
   })
-  socket.on("start-typing", (data) => {
+  socket.on("start-typing", () => {
     socket.broadcast.emit("typing-started-from-server");
   });
-  socket.on("stop-typing", (data) => {
+  socket.on("stop-typing", () => {
     socket.broadcast.emit("typing-stoped-from-server");
   });
-  socket.on("disconnect", (socket) => {
-    activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
-    console.log("User disconnected", activeUsers);
-    io.emit("get-users", activeUsers);
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
   });
-  socket.on("new-user-add", (newUserId) => {
-    if (!activeUsers.some((user) => user.userId === newUserId)) {
-      activeUsers.push({
-        userId: newUserId,
-        socketId: socket.id,
-      });
-    }
-    console.log("Connected users", activeUsers);
-    io.emit("get-users", activeUsers);
-  });
+
 });
 
 server.listen(process.env.PORT, () => {
