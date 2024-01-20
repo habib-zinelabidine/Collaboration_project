@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../../redux/features/user.tsx";
+import DarkMode from "../../../components/DarkMode.tsx";
 
 export default function SignIn() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function SignIn() {
   };
   return (
     <div className={style.container}>
+
       <form onSubmit={handleSubmit}>
         <h1>Collabory</h1>
         <h2>Log in to your account</h2>

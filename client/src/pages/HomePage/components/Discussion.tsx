@@ -10,7 +10,6 @@ import { fetchUsers } from "../../../redux/features/users";
 import { io } from "socket.io-client";
 
 export default function Discussion() {
-  const [showSettings, setshowSettings] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state["user"]);
   const { currentUsers } = useSelector((state) => state["users"]);
@@ -26,7 +25,10 @@ export default function Discussion() {
   const dispatch = useDispatch();
   useEffect(() => {
     setsocket(io(baseURL));
-    getUsers().then((response) => dispatch(fetchUsers(response.data)));
+    getUsers().then((response) => {
+      dispatch(fetchUsers(response.data));
+      setusers(response.data);
+    });
   }, []);
   useEffect(() => {
     if (!socket) return;
@@ -34,16 +36,7 @@ export default function Discussion() {
       setdiscussionChat((prev) => [...prev, data]);
     });
   }, [socket]);
-  const handleLogout = async () => {
-    try {
-      const response = await httpClient.get("/api/auth/logout");
-      if (response.status === 200) {
-        navigate("/signin");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   const handleDiscussion = async (data) => {
     setshowDiscussion(true);
     setUsername(data.username);
@@ -68,51 +61,18 @@ export default function Discussion() {
       text: messages,
     });
   };
-/*   const handleSearch = (e) => {
+  const handleSearch = (e) => {
     setusers(
-      currentUsers.filter((user) => {
-        user.username === e.target.value;
-        console.log(user.username === e.target.value);
-      })
+      currentUsers.filter((user) =>
+        user.username.toLowerCase().includes(e.target.value.toLowerCase())
+      )
     );
   };
-  console.log(users); */
-  
 
   return (
     currentUser! && (
       <div className={style.container}>
-        <div className={style.user_details}>
-          <h1>{currentUser.username}</h1>
-          <div className={style.icons}>
-            <button>
-              <FaBell />
-            </button>
-            <div style={{ marginRight: "10px" }}>
-              <DarkMode />
-            </div>
-            <div onClick={() => setshowSettings(!showSettings)}>
-              <img src={currentUser.avatar} />
-            </div>
-            {showSettings && (
-              <div className={style.settings}>
-                <ul>
-                  <li
-                    onClick={() => {
-                      navigate("/home/profile");
-                      setshowSettings(false);
-                    }}
-                  >
-                    Settings
-                  </li>
-                  <li style={{ color: "red" }} onClick={handleLogout}>
-                    Logout
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
+
         <div className={style.contact}>
           <h2>Contacts</h2>
           <div className={style.search_contact}>
@@ -121,7 +81,7 @@ export default function Discussion() {
                 <input
                   type="text"
                   placeholder="Search friend"
-                  // onChange={handleSearch}
+                  onChange={handleSearch}
                 />
                 <button
                   onClick={() => {
@@ -184,7 +144,7 @@ export default function Discussion() {
         ) : (
           <div className={style.users_list}>
             {currentUsers! &&
-              currentUsers.map((data) => (
+              users.map((data) => (
                 <div
                   style={{ position: "relative" }}
                   className={

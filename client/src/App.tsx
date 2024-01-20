@@ -9,11 +9,18 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "./redux/features/user";
 import Profile from "./pages/Profile/Profile";
+import PrivateRoute from "./components/PrivateRoute";
+
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     const user = localStorage.getItem("dataKey");
     dispatch(login(JSON.parse(user)));
+    const selectedTheme = localStorage.getItem("selectedTheme");
+    if (selectedTheme === "dark") {
+      document.querySelector("body").setAttribute("data-theme", "dark");
+      localStorage.setItem("selectedTheme", "dark");
+    }
   }, []);
 
   return (
@@ -23,12 +30,14 @@ function App() {
           <Route path="signup" element={<SignUp />} />
           <Route path="signin" element={<SignIn />} />
         </Route>
-        <Route path="/home" element={<HomePage />}>
+{/*         <Route element={<PrivateRoute />}>
+ */}        <Route path="/home" element={<HomePage />}>
           <Route path="" element={<TopicsHomePage />} />
           <Route path="/home/topic/:id" element={<TopicDetails />} />
           <Route path="/home/profile" element={<Profile />} />
         </Route>
-        <Route path="/home/:id" element={<TopicDetails />} />
+{/*         </Route>
+ */}        <Route path="/home/:id" element={<TopicDetails />} />
       </Routes>
     </Router>
   );
