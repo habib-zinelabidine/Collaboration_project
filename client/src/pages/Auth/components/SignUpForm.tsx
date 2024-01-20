@@ -2,12 +2,15 @@ import { Link, useNavigate } from "react-router-dom";
 import style from "./SignIn.module.css";
 import { useState } from "react";
 import httpClient from "../../../axios";
+import { useDispatch } from "react-redux";
+import { login } from "../../../redux/features/user";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +21,8 @@ export default function SignUp() {
         password,
       });
       console.log(response);
+      dispatch(login(response.data));
+
       navigate("/home");
     } catch (error) {
       console.log(error.response.data.message);

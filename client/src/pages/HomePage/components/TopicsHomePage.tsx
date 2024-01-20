@@ -4,6 +4,8 @@ import TopicForm from "../../../components/TopicForm";
 import style from "../HomePage.module.css";
 import TopicCard from "../../../components/TopicCard";
 import httpClient from "../../../axios";
+import { FaHome,FaComment,FaPeopleCarry } from "react-icons/fa";
+
 
 export default function TopicsHomePage() {
   const [topics, setTopics] = useState([]);
@@ -21,6 +23,7 @@ export default function TopicsHomePage() {
 
   const [showPopUp, setshowPopUp] = useState(false);
   const [formData, setFormData] = useState(topics);
+  const [showTopics, setshowTopics] = useState(false);
 
   const handleShowPopUp = () => {
     setshowPopUp(!showPopUp);
@@ -50,13 +53,19 @@ export default function TopicsHomePage() {
     }
   };
   return (
+    <div className={showTopics ? style.show_topics : style.home_container}>
+      <div className={style.side_bar}>
+        <button onClick={()=>setshowTopics(!showTopics)}><FaHome /></button>
+        <button><FaPeopleCarry /></button>
+        <button><FaComment /></button>
+      </div>
     <div className={style.topic_container}>
       {
         <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
           <TopicForm
             onClose={() => setshowPopUp(false)}
             onSubmit={handleSubmit}
-          />
+            />
         </PopUp>
       }
       <h1>What do you want to do today?</h1>
@@ -75,5 +84,6 @@ export default function TopicsHomePage() {
         <TopicCard topics={topics} />
       </div>
     </div>
+      </div>
   );
 }

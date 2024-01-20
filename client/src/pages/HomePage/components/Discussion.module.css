@@ -3,8 +3,7 @@
   display: grid;
   grid-auto-rows: 10% 10% 90%;
   position: relative;
-  height: 100vh;
-
+  height: 92vh;
   border-left: 1px solid var(--message-background-color);
 }
 .user_details {
@@ -17,6 +16,7 @@
   width: 40px;
   border-radius: 50%;
   cursor: pointer;
+  margin-right: 10px;
 }
 .user_details h1 {
   color: var(--text-color);
@@ -26,7 +26,6 @@
   display: grid;
   grid-template-columns: 80% 20%;
   height: 80vh;
-
 }
 .discussion_content {
   display: grid;
@@ -38,7 +37,7 @@
 .person_info {
   display: flex;
   justify-content: space-between;
- align-items: center;
+  align-items: center;
   padding: 10px;
   background-color: var(--background-color);
   border-bottom: 1px solid var(--message-background-color);
@@ -112,11 +111,10 @@
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
-
 }
 .message p {
   background-color: var(--content-background-color);
-  margin: 10px 0; 
+  margin: 10px 0;
   border-radius: 5px;
   padding: 10px;
   color: var(--text-color);
@@ -184,9 +182,9 @@
   display: flex;
   justify-content: start;
   align-items: center;
-  padding: 5px;
   cursor: pointer;
   width: 100%;
+  padding: 10px;
 }
 .users_container:hover {
   background-color: var(--content-background-color);
@@ -213,7 +211,7 @@
   width: 40px;
   border-radius: 50%;
 }
-.contact button{
+.contact button {
   height: 30px;
   width: 30px;
   border-radius: 50%;
@@ -223,18 +221,25 @@
   color: var(--text-color);
   cursor: pointer;
 }
+.contact h2 {
+  color: var(--text-color);
+}
 .users_list {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
   height: 80vh;
-
 }
 .users_list img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
+}
+.users_list h2 {
+  font-size: 20px;
+  margin: 0 15px;
+  color: var(--text-color);
 }
 .users_icon {
   display: flex;
@@ -245,21 +250,37 @@
   width: 40px;
   border-radius: 50%;
 }
-.search_friend{
+.search_friend {
   display: flex;
   justify-content: space-between;
 }
-.search_friend input{
+.search_friend input {
   width: 100%;
-  border-radius: 5px;
+  border-radius: 5px 0 0 5px;
   background-color: var(--message-background-color);
   border: none;
   outline: none;
   color: var(--text-color);
   padding: 0 10px;
 }
-.search_contact{
+.search_friend button {
+  height: 30px;
+  width: 30px;
+  border-radius: 0 5px 5px 0;
+  background-color: rgb(244, 58, 58);
+  border: none;
+  outline: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.search_contact {
   display: flex;
   justify-content: space-between;
-  margin:  0 5px;
+  margin: 0 5px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: none;
+  }
 }

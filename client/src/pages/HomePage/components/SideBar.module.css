@@ -2,14 +2,15 @@
   width: 100%;
   overflow: auto;
   background-color: var(--background-color);
-  height: 100vh;
+  height: 92vh;
   border-right: 2px solid var(--message-background-color);
+  padding-top: 10px;
 }
 .container h3 {
   color: var(--text-color);
   display: flex;
-  margin: 10px;
   padding: 10px;
+  margin: 5px;
 }
 .container Link {
   text-decoration: none;
@@ -33,9 +34,27 @@ a {
   background-color: var(--content-backgroud-color);
   border-right: 2px solid var(--button-background-color);
 }
-.container h1,
-h2 {
-  font-size: 20px;
-  margin: 20px;
+.container h1 {
+  margin: 10px;
   color: var(--text-color);
+}
+.container h2{
+  margin: 0 10px;
+  color: var(--text-color);
+}
+
+.container input{
+  background-color: var(--message-background-color);
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  margin: 10px;
+  width: 80%;
+  color: var(--text-color);
+}
+@media (max-width: 992px) {
+  .container{
+    display: none;
+  }
 }

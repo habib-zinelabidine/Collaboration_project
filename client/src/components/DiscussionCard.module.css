@@ -4,14 +4,14 @@
   margin: 10px;
 }
 .container img {
-  height: 40px;
-  width: 100%;
-  border-radius: 50%;
-  padding: 0 5px;
+  height: 50%;
+  width: 90%;
+  border-radius: 15%;
 }
 .container p {
   padding: 10px;
   border-radius: 5px;
+
 }
 .content {
   display: grid;
@@ -26,9 +26,12 @@
 }
 .userDetails h2{
     margin: 5px;
+    font-size: 1.2rem;
 }
 .userDetails p{
     margin: 0;
+    font-size: 0.8rem;
+
 }
 .message p{
   color: var(--text-color)

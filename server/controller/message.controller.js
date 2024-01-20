@@ -1,7 +1,7 @@
 import MessageModel from "../model/MessageModel.js";
 
 export const addMessage = async (req, res) => {
-  const { senderId,receiverId, text } = req.body;
+  const { senderId, receiverId, text } = req.body;
   const message = new MessageModel({
     senderId,
     receiverId,
@@ -16,9 +16,14 @@ export const addMessage = async (req, res) => {
 };
 
 export const getMessages = async (req, res) => {
-  const { senderId,receiverId } = req.params;
+  const { senderId, receiverId } = req.params;
   try {
-    const result = await MessageModel.find({ senderId,receiverId });
+    const result = await MessageModel.find({
+      $or: [
+        { senderId: senderId, receiverId: receiverId },
+        { senderId: receiverId, receiverId: senderId },
+      ],
+    });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
