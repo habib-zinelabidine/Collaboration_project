@@ -1,4 +1,4 @@
-.container {
+.container, .showDiscussion, .showDiscussionList {
   background-color: var(--background-color);
   display: grid;
   grid-auto-rows: 10% 10% 90%;
@@ -283,4 +283,24 @@
   .container {
     display: none;
   }
+  .showDiscussion{
+    display: none;
+  }
+  .showDiscussionList{
+    position: absolute;
+    right: 0;
+    width: 40%;
+  }
+}
+@media (max-width: 992px) {
+  .showDiscussion {
+    width: 25%;
+  }
+  
+}
+@media (max-width: 500px) {
+  .showDiscussionList{
+    width: 100%;
+  }
+
 }

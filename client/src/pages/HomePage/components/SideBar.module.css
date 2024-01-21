@@ -1,4 +1,7 @@
-.container {
+.container,
+.showTopics {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   overflow: auto;
   background-color: var(--background-color);
@@ -6,13 +9,15 @@
   border-right: 2px solid var(--message-background-color);
   padding-top: 10px;
 }
-.container h3 {
+.container h3,
+.showTopics h3 {
   color: var(--text-color);
   display: flex;
   padding: 10px;
   margin: 5px;
 }
-.container Link {
+.container Link,
+.showTopics Link {
   text-decoration: none;
   color: var(--text-color);
 }
@@ -20,30 +25,37 @@ a {
   color: var(--text-color);
   text-decoration: none;
 }
-.container ul {
+.container ul,
+.showTopics ul {
   text-decoration: none;
 }
-.container li {
+.container li,
+.showTopics li {
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .container li:hover,
-.container li:active {
+.showTopics li:hover,
+.container li:active,
+.showTopics li:active {
   background-color: var(--content-backgroud-color);
   border-right: 2px solid var(--button-background-color);
 }
-.container h1 {
+.container h1,
+.showTopics h1 {
   margin: 10px;
   color: var(--text-color);
 }
-.container h2{
+.container h2,
+.showTopics h2 {
   margin: 0 10px;
   color: var(--text-color);
 }
 
-.container input{
+.container input,
+.showTopics input {
   background-color: var(--message-background-color);
   padding: 10px;
   border: none;
@@ -53,8 +65,24 @@ a {
   width: 80%;
   color: var(--text-color);
 }
+
 @media (max-width: 992px) {
-  .container{
+  .container {
     display: none;
+  }
+  .showTopics {
+    z-index: 2;
+    position: absolute;
+    width: 20%;
+  }
+}
+@media (max-width: 768px) {
+  .showTopics {
+    width: 40%;
+  }
+}
+@media (max-width: 500px) {
+  .showTopics {
+    width: 100%;
   }
 }

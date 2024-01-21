@@ -3,7 +3,7 @@ import style from "./SideBar.module.css";
 import { useEffect, useState } from "react";
 import httpClient from "../../../axios";
 
-export default function SideBar() {
+export default function SideBar({ showTopics }) {
   const [topics, setTopics] = useState([]);
   useEffect(() => {
     const fetchTopics = async () => {
@@ -24,13 +24,10 @@ export default function SideBar() {
     );
     console.log(topics);
     console.log(e.target.value);
-    
-    
   };
 
   return (
-    <div className={style.container}>
-      
+    <div className={showTopics ? style.showTopics : style.container}>
       <h2>Topics</h2>
       <input
         type="text"

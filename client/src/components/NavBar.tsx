@@ -1,12 +1,17 @@
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./NavBar.module.css";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaComment, FaEllipsisV } from "react-icons/fa";
 import { useState } from "react";
 import httpClient from "../axios";
 import logo from "../assets/teamwork.svg";
 
-export default function NavBar() {
+export default function NavBar({
+  setshowTopics,
+  showTopics,
+  showDiscussionList,
+  setshowDiscussionList,
+}) {
   const { currentUser } = useSelector((state) => state["user"]);
   const [showSettings, setshowSettings] = useState(false);
   const navigate = useNavigate();
@@ -32,6 +37,26 @@ export default function NavBar() {
           <h1>Collabory</h1>
         </div>
         <div className={style.user_details}>
+          <div className={style.options}>
+            <button
+              className={style.topics}
+              onClick={() => {
+                setshowTopics(!showTopics);
+                setshowDiscussionList(false);
+              }}
+            >
+              <FaEllipsisV />
+            </button>
+            <button
+              className={style.messages}
+              onClick={() => {
+                setshowDiscussionList(!showDiscussionList);
+                setshowTopics(false);
+              }}
+            >
+              <FaComment />
+            </button>
+          </div>
           <h1>{currentUser.username}</h1>
           <div className={style.icons}>
             <button>

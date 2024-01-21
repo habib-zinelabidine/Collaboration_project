@@ -3,28 +3,28 @@
   height: 100vh;
   width: 100%;
   border-radius: 5px 0 0 5px;
-  position: fixed;
   z-index: 1;
-
-  
+  position: absolute;
+  top: 0;
+  left: 0;
 }
-.container h1{
-    color: black;
+.container h1 {
+  color: black;
 }
-.container label{
-    color: black;
-    margin: 10px 0;
-    font-size: 1.2rem;
+.container label {
+  color: black;
+  margin: 10px 0;
+  font-size: 1.2rem;
 }
-.container textarea{
-    padding: 10px;
-    border-radius: 5px;
-    outline: none;
-    border: 1px solid var(--content-backgroud-color);
+.container textarea {
+  padding: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid var(--content-backgroud-color);
 }
-.container input{
-    padding: 10px;
-    border-radius: 5px;
-    outline: none;
-    border: 1px solid var(--content-backgroud-color);
+.container input {
+  padding: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid var(--content-backgroud-color);
 }

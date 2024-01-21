@@ -5,9 +5,11 @@ import style from "../HomePage.module.css";
 import TopicCard from "../../../components/TopicCard";
 import httpClient from "../../../axios";
 import { FaHome,FaComment,FaPeopleCarry } from "react-icons/fa";
+import { useOutletContext } from "react-router-dom";
 
 
 export default function TopicsHomePage() {
+  const showTopics = useOutletContext();
   const [topics, setTopics] = useState([]);
   useEffect(() => {
     const fetchTopics = async () => {
@@ -23,7 +25,6 @@ export default function TopicsHomePage() {
 
   const [showPopUp, setshowPopUp] = useState(false);
   const [formData, setFormData] = useState(topics);
-  const [showTopics, setshowTopics] = useState(false);
 
   const handleShowPopUp = () => {
     setshowPopUp(!showPopUp);
@@ -53,13 +54,8 @@ export default function TopicsHomePage() {
     }
   };
   return (
-    <div className={showTopics ? style.show_topics : style.home_container}>
-      <div className={style.side_bar}>
-        <button onClick={()=>setshowTopics(!showTopics)}><FaHome /></button>
-        <button><FaPeopleCarry /></button>
-        <button><FaComment /></button>
-      </div>
-    <div className={style.topic_container}>
+
+    <div className={!showTopics ? style.topic_container : style.showTopics}>
       {
         <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
           <TopicForm
@@ -84,6 +80,5 @@ export default function TopicsHomePage() {
         <TopicCard topics={topics} />
       </div>
     </div>
-      </div>
   );
 }

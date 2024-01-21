@@ -23,7 +23,7 @@
   --link-color: #828fff;
 }
 * {
-  transition: all 0.3s ease-in-out;
+  /* transition: all 0.3s ease-in-out; */
 }
 body {
   background-color: var(--background-color);
