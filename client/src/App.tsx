@@ -31,14 +31,14 @@ function App() {
           <Route path="signin" element={<SignIn />} />
         </Route>
 {/*         <Route element={<PrivateRoute />}>
- */}        <Route path="/home" element={<HomePage />}>
-          <Route path="" element={<TopicsHomePage />} />
-          <Route path="/home/topic/:id" element={<TopicDetails />} />
-          <Route path="/home/profile" element={<Profile />} />
-        </Route>
+ */}          <Route path="/home" element={<HomePage />}>
+            <Route path="" element={<TopicsHomePage />} />
+            <Route path="/home/topic/:id" element={<TopicDetails />} />
+            <Route path="/home/profile" element={<Profile />} />
+          </Route>
+        <Route path="/home/:id" element={<TopicDetails />} />
 {/*         </Route>
- */}        <Route path="/home/:id" element={<TopicDetails />} />
-      </Routes>
+ */}      </Routes>
     </Router>
   );
 }

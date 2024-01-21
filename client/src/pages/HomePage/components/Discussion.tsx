@@ -9,7 +9,7 @@ import { getUsers } from "../../../APi/getUsers";
 import { fetchUsers } from "../../../redux/features/users";
 import { io } from "socket.io-client";
 
-export default function Discussion() {
+export default function Discussion({ showTopics, showDiscussionList }) {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state["user"]);
   const { currentUsers } = useSelector((state) => state["users"]);
@@ -71,8 +71,15 @@ export default function Discussion() {
 
   return (
     currentUser! && (
-      <div className={style.container}>
-
+      <div
+        className={
+          showTopics
+            ? style.showDiscussion
+            : style.container && showDiscussionList
+            ? style.showDiscussionList
+            : style.container
+        }
+      >
         <div className={style.contact}>
           <h2>Contacts</h2>
           <div className={style.search_contact}>

@@ -72,3 +72,34 @@
   .settings li:hover {
     background-color: var(--content-background-color);
   }
+  .topics,.messages{
+    display: none;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    margin: 0 10px;
+    align-items: center;
+    background-color: var(--message-background-color);
+    color: var(--text-color);
+    cursor: pointer;
+  }
+  .options{
+    display: flex;
+
+  }
+  @media (max-width : 768px){
+    .messages{
+      display: flex;
+      margin: 0 5px;
+    }
+  }
+  @media (max-width : 992px){
+    .topics{
+      display: flex;
+      margin: 0 5px;
+
+    }
+  }
