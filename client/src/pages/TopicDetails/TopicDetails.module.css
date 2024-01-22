@@ -60,3 +60,6 @@
     background-color: var(--button-background-color);
     color: var(--text-color);
 }
+.typing{
+  color: var(--text-color);
+}

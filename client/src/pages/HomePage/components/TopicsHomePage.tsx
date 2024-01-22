@@ -41,11 +41,12 @@ export default function TopicsHomePage() {
     formData.append("topicName", data.topicName);
     formData.append("description", data.description);
     formData.append("imageUrl", data.imageUrl);
+    formData.append("members",data.option);
     try {
       const response = await httpClient.post("/api/topic/create", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log(formData);
+      console.log(response.data);
 
       setTopics([...topics, response.data]);
       console.log(topics);

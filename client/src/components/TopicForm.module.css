@@ -1,18 +1,40 @@
 .content {
   position: absolute;
   background-color: white;
-  right: 0;
   width: 40%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  border-radius: 5px 0 0 5px;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
   color: black;
+  transform: translate(-50%, -50%);
 }
-.content input[type="file"] {
+
+.image_uploader {
   margin-top: 20px;
-  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #1475cf;
+  height: 150px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.uploaded_row{
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 5px;
+  background: #e9f0ff;
+}
+.uploaded_content{
+  display: flex;
+  align-items: center;
 }
 .content input{
   border: 1px solid black;
@@ -35,14 +57,12 @@
   border-radius: 5px;
 }
 .btn {
-  position: absolute;
   display: flex;
-  bottom: 0;
-  right: 0;
-  width: 50%;
+  justify-content: end;
+
 }
 .btn button {
-  width: 40%;
+  width: 20%;
   margin: 10px;
   padding: 10px;
   border-radius: 5px;

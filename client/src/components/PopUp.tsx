@@ -13,7 +13,7 @@ export default function PopUp({
   
   return (
     isOpen && (
-      <div className={style.container} onClick={onClose}>
+      <div className={`${style.container} ${isOpen ? style.open : style.close}`} onClick={onClose}>
         {children}
       </div>
     )
