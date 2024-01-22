@@ -21,7 +21,9 @@ export default function SideBar({ showTopics }) {
       topics.filter((topic) =>
         topic.topicName.toLowerCase().includes(e.target.value.toLowerCase())
       )
+      
     );
+
     console.log(topics);
     console.log(e.target.value);
   };

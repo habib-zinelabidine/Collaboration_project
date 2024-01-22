@@ -14,6 +14,7 @@ import PrivateRoute from "./components/PrivateRoute";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
+
     const user = localStorage.getItem("dataKey");
     dispatch(login(JSON.parse(user)));
     const selectedTheme = localStorage.getItem("selectedTheme");
@@ -30,15 +31,15 @@ function App() {
           <Route path="signup" element={<SignUp />} />
           <Route path="signin" element={<SignIn />} />
         </Route>
-{/*         <Route element={<PrivateRoute />}>
- */}          <Route path="/home" element={<HomePage />}>
+        <Route element={<PrivateRoute />}>
+          <Route path="/home" element={<HomePage />}>
             <Route path="" element={<TopicsHomePage />} />
             <Route path="/home/topic/:id" element={<TopicDetails />} />
             <Route path="/home/profile" element={<Profile />} />
           </Route>
-        <Route path="/home/:id" element={<TopicDetails />} />
-{/*         </Route>
- */}      </Routes>
+          <Route path="/home/:id" element={<TopicDetails />} />
+        </Route>
+      </Routes>
     </Router>
   );
 }

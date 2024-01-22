@@ -39,7 +39,7 @@ export default function TopicDetails() {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("message-from-server", (data: { message: any }) => {
+    socket.on("message-from-server", (data: { message: any;}) => {
       setloadDiscussion((prev) => [...prev, data]);
     });
     socket.on("typing-started-from-server", () => {
@@ -52,7 +52,11 @@ export default function TopicDetails() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setmessage("");
-    socket.emit("send-message", { message, topicId: state._id });
+    socket.emit("send-message", {
+      message,
+      topicId: state._id,
+      senderId: currentUser._id,
+    });
   };
   const handleInput = (e) => {
     setmessage(e.target.value);
@@ -64,6 +68,8 @@ export default function TopicDetails() {
       }, 1000)
     );
   };
+  
+
   return (
     <form className={style.container} onSubmit={handleSubmit}>
       <div className={style.topic_disccussion}>
@@ -73,12 +79,19 @@ export default function TopicDetails() {
           <p>{state.description}</p>
           <div className={style.discussion}>
             {loadDiscussion.map((message) => (
-              <DiscussionCard key={Math.random()} message={message.message} discussion={message.createdAt}/>
+              <DiscussionCard
+                key={Math.random()*1000}
+                message={message.message}
+                discussionTime={message.createdAt}
+                senderId={message.senderId}
+              />
             ))}
           </div>
         </div>
       </div>
-      <div>{typing ? `${currentUser.username} is typing...` : ""}</div>
+      <div className={style.typing}>
+        {typing ? `${currentUser.username} is typing...` : ""}
+      </div>
       <div className={style.send_message}>
         <input type="text" onChange={handleInput} value={message} />
         <button type="submit">send</button>

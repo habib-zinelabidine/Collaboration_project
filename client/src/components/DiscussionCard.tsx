@@ -1,27 +1,32 @@
 import { useSelector } from "react-redux";
 import style from "./DiscussionCard.module.css";
-import TimeAgo from "javascript-time-ago";
+import TimeAgo from "timeago-react";
+import { useEffect, useState } from "react";
+import httpClient from "../axios";
 
-import en from "javascript-time-ago/locale/en";
-
-TimeAgo.addDefaultLocale(en);
-
-const timeAgo = new TimeAgo("en-US");
-
-export default function DiscussionCard({ message, discussion }) {
+export default function DiscussionCard({ message, discussionTime, senderId }) {
   const { currentUser } = useSelector((state) => state["user"]);
+  const [user, setuser] = useState(Object);
+  useEffect(() => {
+    const fetchUserDiscussion = async () => {
+      const response = await httpClient.get(`/api/discussion/user/${senderId}`);
+      setuser(response.data);
+    };
+    fetchUserDiscussion();
+  }, []);
 
-  const dateObject = new Date(discussion);
-  timeAgo.format(dateObject);
+  const dateObject = new Date(discussionTime);
 
   return (
     currentUser! && (
       <div className={style.container}>
-        <img src={currentUser.avatar} />
+        <img src={user.avatar} />
         <div className={style.content}>
           <div className={style.userDetails}>
-            <h2>{currentUser.username}</h2>
-            <p>{timeAgo.format(dateObject)}</p>
+            <h2>{user.username}</h2>
+            <p>
+              <TimeAgo datetime={dateObject} />
+            </p>
           </div>
           <div className={style.message}>
             <p>{message}</p>

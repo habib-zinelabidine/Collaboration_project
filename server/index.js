@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import authRouter from "./routes/auth.router.js";
 import topicRouter from "./routes/topic.router.js";
 import userRouter from "./routes/user.router.js";
-import chatRouter from "./routes/chat.router.js";
 import messageRouter from "./routes/message.router.js";
 import discussionRouter from "./routes/discussion.router.js";
 import cors from "cors";
@@ -12,7 +11,6 @@ import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import Topic from "./model/Topic.model.js";
 import Discussion from "./model/Discussion.js";
 import MessageModel from "./model/MessageModel.js";
 dotenv.config();
@@ -34,28 +32,30 @@ app.get("/", (req, res) => {
 });
 io.on("connection", (socket) => {
   console.log("user connected");
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
   });
   socket.on("send-message", (data) => {
     const discussion = new Discussion({
+      _id: data._id,
       message: data.message,
       topicId: data.topicId,
+      senderId: data.senderId,
     });
     discussion.save().then(() => {
       io.emit("message-from-server", data);
     });
   });
-  socket.on("private-message",(data)=>{
+  socket.on("private-message", (data) => {
     const privateMessage = new MessageModel({
       senderId: data.senderId,
-      receiverId : data.receiverId,
-      text: data.text
-    })
-    privateMessage.save().then(()=>{
-      io.emit("private-message-from-server",data)
-    })
-  })
+      receiverId: data.receiverId,
+      text: data.text,
+    });
+    privateMessage.save().then(() => {
+      io.emit("private-message-from-server", data);
+    });
+  });
   socket.on("start-typing", () => {
     socket.broadcast.emit("typing-started-from-server");
   });
@@ -65,7 +65,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
-
 });
 
 server.listen(process.env.PORT, () => {
@@ -77,7 +76,6 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", authRouter);
 app.use("/api/topic", topicRouter);
 app.use("/api/user", userRouter);
-app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/discussion", discussionRouter);
 

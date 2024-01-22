@@ -28,3 +28,11 @@
   outline: none;
   border: 1px solid var(--content-backgroud-color);
 }
+.open {
+  box-shadow: 0 0 10px rgba(55, 55, 55, 0.3);
+  transition: 400ms;
+}
+.close {
+  transform: translateY(100%);
+  transition: 400ms;
+}

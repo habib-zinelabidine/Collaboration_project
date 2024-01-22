@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 
 import style from "./TopicForm.module.css";
 import httpClient from "../axios";
 import { useSelector } from "react-redux";
+import { MdCloudUpload, MdDelete } from "react-icons/md";
+import { AiFillFileImage } from "react-icons/ai";
 
 export default function TopicForm({
   onClose,
@@ -24,11 +26,15 @@ export default function TopicForm({
   }));
 
   const [selectedOption, setSelectedOption] = useState(null);
+  const fileRef = useRef(null);
+
   const [topicName, setTopicName] = useState("");
   const [description, setdescription] = useState("");
   const [showList, setshowList] = useState(false);
   const [imageUrl, setimageUrl] = useState(null);
-
+  const [image, setimage] = useState(null);
+  const [fileName, setfileName] = useState("No selected file");
+  const members = [];
   return (
     <form
       className={style.content}
@@ -38,6 +44,7 @@ export default function TopicForm({
           topicName,
           description,
           imageUrl,
+          members,
         });
       }}
       onClick={(e) => e.stopPropagation()}
@@ -55,7 +62,7 @@ export default function TopicForm({
         placeholder="Description"
         onChange={(e) => setdescription(e.target.value)}
       />
-      <label>Invite members</label>
+      {/*       <label>Invite members</label>
       <Select
         className={style.select}
         defaultValue={selectedOption}
@@ -70,14 +77,41 @@ export default function TopicForm({
         onChange={setSelectedOption}
         options={options}
         isMulti
-      />
-
+      /> */}
+      <div className={style.image_uploader} onClick={()=>fileRef.current.click()}>
       <input
         type="file"
-        onChange={(event) => {
-          setimageUrl(event.target.files[0]);
+        ref={fileRef}
+        hidden
+        onChange={({ target: { files } }) => {
+          files[0] && setfileName(files[0].name);
+          if (files) {
+            setimage(URL.createObjectURL(files[0]));
+            setimageUrl(files[0]);
+          }
         }}
       />
+      {image ? (
+        <img src={image} width={200} height={150} alt={fileName} />
+      ) : (
+       <> 
+        <MdCloudUpload color="#1475cf" size={60} />
+        <p>Browser File to upload</p>
+        </>
+      )}
+      
+      </div>
+      <div>
+      <section className={style.uploaded_row}>
+        <AiFillFileImage color='#1475cf'/>
+        <span className={style.uploaded_content}>
+          {fileName} - <MdDelete onClick={()=>{
+            setfileName('No seleceted file')
+            setimage(null)
+          }}/>
+        </span>
+      </section>
+      </div>
       <div className={style.btn}>
         <button type="submit" className={style.btn_create}>
           Create
