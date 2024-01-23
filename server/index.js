@@ -37,7 +37,6 @@ io.on("connection", (socket) => {
   });
   socket.on("send-message", (data) => {
     const discussion = new Discussion({
-      _id: data._id,
       message: data.message,
       topicId: data.topicId,
       senderId: data.senderId,

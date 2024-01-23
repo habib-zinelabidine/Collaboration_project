@@ -6,14 +6,16 @@ import httpClient from "../axios";
 
 export default function DiscussionCard({ message, discussionTime, senderId }) {
   const { currentUser } = useSelector((state) => state["user"]);
-  const [user, setuser] = useState(Object);
-  useEffect(() => {
+  const [user, setuser] = useState(Object)
+/*   useEffect(() => {
     const fetchUserDiscussion = async () => {
       const response = await httpClient.get(`/api/discussion/user/${senderId}`);
       setuser(response.data);
+      console.log("ok");
+      
     };
     fetchUserDiscussion();
-  }, []);
+  }, []); */
 
   const dateObject = new Date(discussionTime);
 
