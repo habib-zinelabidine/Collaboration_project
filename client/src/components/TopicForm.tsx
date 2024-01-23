@@ -34,7 +34,6 @@ export default function TopicForm({
   const [imageUrl, setimageUrl] = useState(null);
   const [image, setimage] = useState(null);
   const [fileName, setfileName] = useState("No selected file");
-  const members = [];
   return (
     <form
       className={style.content}
@@ -44,7 +43,6 @@ export default function TopicForm({
           topicName,
           description,
           imageUrl,
-          members,
         });
       }}
       onClick={(e) => e.stopPropagation()}

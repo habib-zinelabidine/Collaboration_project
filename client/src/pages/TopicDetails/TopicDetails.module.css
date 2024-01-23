@@ -63,3 +63,17 @@
 .typing{
   color: var(--text-color);
 }
+.members{
+  display: flex;
+  justify-content: space-between;
+}
+.members button{
+  padding: 10px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: var(--button-background-color);
+  color: var(--text-color);
+  cursor: pointer;
+}
