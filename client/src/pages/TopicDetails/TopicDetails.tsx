@@ -15,19 +15,17 @@ import { useSelector } from "react-redux";
 import PopUp from "../../components/PopUp";
 import TopicForm from "../../components/TopicForm";
 import AddMembers from "../../components/AddMembersForm.tsx";
-import type { RootState } from '../../redux/store.tsx'
 
 export default function TopicDetails() {
   let { state } = useLocation();
   const [socket, setsocket] = useState(null);
-  const [message, setmessage] = useState("");
+  const [messages, setmessages] = useState("");
   const [loadDiscussion, setloadDiscussion] = useState([]);
   const [chat, setChat] = useState([]);
   const [typing, setTyping] = useState(false);
   const [typingTimeOut, setTypingTimeOut] = useState(null);
-  const { currentUser } = useSelector((state : RootState) => state.user);
+  const { currentUser } = useSelector((state) => state["user"]);
   const [showPopUp, setshowPopUp] = useState(false);
-
 
   const [user, setuser] = useState([]);
 
@@ -47,21 +45,14 @@ export default function TopicDetails() {
     };
     fetchDiscussion();
   }, [state._id]);
-/*   useEffect(() => {
-    const fetchUserDiscussion = async () => {
-      const response = await httpClient.get(
-        `/api/discussion/user/${currentUser._id}`
-      );
-      setuser(response.data);
-    };
-    fetchUserDiscussion();
-  }, []); */
+
 
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("message-from-server", (data: { message: any }) => {
+    socket.on("message-from-server", (data: { data: any }) => {
       setloadDiscussion((prev) => [...prev, data]);
+      
     });
     socket.on("typing-started-from-server", () => {
       setTyping(true);
@@ -72,15 +63,15 @@ export default function TopicDetails() {
   }, [socket]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    setmessage("");
+    setmessages("");
     socket.emit("send-message", {
-      message,
+      message : messages,
       topicId: state._id,
       senderId: currentUser._id,
     });
   };
   const handleInput = (e) => {
-    setmessage(e.target.value);
+    setmessages(e.target.value);
     socket.emit("start-typing");
     if (typingTimeOut) clearTimeout(typingTimeOut);
     setTypingTimeOut(
@@ -89,12 +80,22 @@ export default function TopicDetails() {
       }, 1000)
     );
   };
+  const handleSubmitForm = async(data) => {
+   try {
+     const response = await httpClient.patch(`/api/topic/update/${state._id}`,data)
+     console.log(response);
+     
+   } catch (error) {
+     console.log(error);
+     
+   }
+ };
 
   return (
-    <div className={style.container} onSubmit={handleSubmit}>
+    <div className={style.container}>
       {
         <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
-          <AddMembers />
+          <AddMembers onSubmit={handleSubmitForm}/>
         </PopUp>
       }
       <div className={style.topic_disccussion}>
@@ -110,11 +111,10 @@ export default function TopicDetails() {
           <div className={style.discussion}>
             {loadDiscussion.map((message) => (
               <DiscussionCard
-                key={Math.random() * 1000}
+                key={message._id}
                 message={message.message}
                 discussionTime={message.createdAt}
                 senderId={message.senderId}
-                
               />
             ))}
           </div>
@@ -123,8 +123,8 @@ export default function TopicDetails() {
       <div className={style.typing}>
         {typing ? `${currentUser.username} is typing...` : ""}
       </div>
-      <form className={style.send_message}>
-        <input type="text" onChange={handleInput} value={message} />
+      <form className={style.send_message} onSubmit={handleSubmit}>
+        <input type="text" onChange={handleInput} value={messages} />
         <button type="submit">send</button>
       </form>
       {/* <div className={style.message}>

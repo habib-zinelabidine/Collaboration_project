@@ -4,18 +4,23 @@ import TopicForm from "../../../components/TopicForm";
 import style from "../HomePage.module.css";
 import TopicCard from "../../../components/TopicCard";
 import httpClient from "../../../axios";
-import { FaHome,FaComment,FaPeopleCarry } from "react-icons/fa";
+import { FaHome, FaComment, FaPeopleCarry } from "react-icons/fa";
 import { useOutletContext } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 
 export default function TopicsHomePage() {
+  const { currentUser } = useSelector((state) => state["user"]);
   const showTopics = useOutletContext();
   const [topics, setTopics] = useState([]);
   useEffect(() => {
     const fetchTopics = async () => {
       try {
         const response = await httpClient.get("/api/topic/findall");
-        setTopics(response.data);
+        const filteredTopics = response.data.filter((topic) =>
+          topic.members.includes(currentUser._id)
+        );
+
+        setTopics(filteredTopics);
       } catch (error) {
         console.log(error);
       }
@@ -41,7 +46,7 @@ export default function TopicsHomePage() {
     formData.append("topicName", data.topicName);
     formData.append("description", data.description);
     formData.append("imageUrl", data.imageUrl);
-    formData.append("members",data.option);
+    formData.append("members", data.option);
     try {
       const response = await httpClient.post("/api/topic/create", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -55,31 +60,31 @@ export default function TopicsHomePage() {
     }
   };
   return (
-
-    <div className={!showTopics ? style.topic_container : style.showTopics}>
-      {
-        <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
-          <TopicForm
-            onClose={() => setshowPopUp(false)}
-            onSubmit={handleSubmit}
+      <div className={!showTopics ? style.topic_container : style.showTopics}>
+        {
+          <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
+            <TopicForm
+              onClose={() => setshowPopUp(false)}
+              onSubmit={handleSubmit}
             />
-        </PopUp>
-      }
-      <h1>What do you want to do today?</h1>
-      <div className={style.search}>
-        <input placeholder="Search topic..." onChange={handleSearch} />
+          </PopUp>
+        }
+        <h1>What do you want to do today?</h1>
+        <div className={style.search}>
+          <input placeholder="Search topic..." onChange={handleSearch} />
 
-        <select>
-          <option value="">Sorted by</option>
-          <option value="Name">Name</option>
-          <option value="Creation Date">Creation Date</option>
-          <option value="Updated Date">Updated Date</option>
-        </select>
-        <button onClick={handleShowPopUp}>Add topic</button>
+          <select>
+            <option value="">Sorted by</option>
+            <option value="Name">Name</option>
+            <option value="Creation Date">Creation Date</option>
+            <option value="Updated Date">Updated Date</option>
+          </select>
+          <button onClick={handleShowPopUp}>Add topic</button>
+        </div>
+        <div className={style.options}>
+          <TopicCard topics={topics} />
+        </div>
       </div>
-      <div className={style.options}>
-        <TopicCard topics={topics} />
-      </div>
-    </div>
+    
   );
 }

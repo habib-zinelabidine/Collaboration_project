@@ -9,7 +9,8 @@ export const createTopic = async (req, res, next) => {
       description: req.body.description,
     });
     if (req.file) {
-      topic.imageUrl = process.env.baseUrl + process.env.PORT + "/"+ req.file.path;
+      topic.imageUrl =
+        process.env.baseUrl + process.env.PORT + "/" + req.file.path;
     }
     topic
       .save()
@@ -17,7 +18,7 @@ export const createTopic = async (req, res, next) => {
         res.json(topic);
       })
       .catch((error) => {
-        res.json({error});
+        res.json({ error });
       });
   } catch (error) {
     next(error);
@@ -27,6 +28,32 @@ export const getTopics = async (req, res, next) => {
   try {
     const topic = await Topic.find();
     res.status(200).json(topic);
+  } catch (error) {
+    next(error);
+  }
+};
+export const updateTopics = async (req, res, next) => {
+  try {
+    const updateTopic = await Topic.findByIdAndUpdate(
+      req.params.id,
+      {
+        $addToSet: {
+          members: { $each: req.body.members }, // $each is used to add multiple values
+        },
+        $set: {
+          topicName: req.body.topicName,
+          description: req.body.description,
+          imageUrl: req.body.imageUrl,
+        },
+      },
+      { new: true }
+    );
+
+    if (!updateTopic) {
+      return res.status(404).json({ error: "Topic not found" });
+    }
+
+    res.status(200).json(updateTopic);
   } catch (error) {
     next(error);
   }

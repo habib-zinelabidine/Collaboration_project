@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
       senderId: data.senderId,
     });
     discussion.save().then(() => {
-      io.emit("message-from-server", data);
+      io.emit("message-from-server", discussion);
     });
   });
   socket.on("private-message", (data) => {

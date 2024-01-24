@@ -1,7 +1,6 @@
 .card {
-  width: 30%;
   height: 150px;
-  margin: 20px 5px;
+  margin: 10px 5px;
   padding: 0;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -44,16 +43,5 @@
     margin: 5px;
     display: flex;
     text-overflow: ellipsis;
-  }
-}
-@media (max-width: 768px){
-  .card{
-    width: 45%;
-
-  }
-}
-@media (max-width: 500px){
-  .card{
-    width: 80%;
   }
 }

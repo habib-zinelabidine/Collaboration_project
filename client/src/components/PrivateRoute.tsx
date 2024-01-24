@@ -6,6 +6,6 @@ export default function PrivateRoute() {
   const { currentUser } = useSelector((state) => state["user"]);
   const user = localStorage.getItem("dataKey");
 
-  return user ? <Outlet/> : <Navigate to="/signin"/>;
+  return currentUser ? <Outlet/> : <Navigate to="/signin"/>;
   
 }
