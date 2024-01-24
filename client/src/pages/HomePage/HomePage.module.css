@@ -8,10 +8,9 @@
   grid-template-columns: 15% 60% 25%;
 }
 .options {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  margin-top: 20px;
 }
 .topic_container, .showTopics {
   width: 100%;
@@ -109,10 +108,14 @@
     display: flex;
     position: relative;
   }
+  .options {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+  }
 }
 @media (max-width: 500px) {
   .options {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
   }
 }

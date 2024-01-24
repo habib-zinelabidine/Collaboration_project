@@ -10,8 +10,6 @@ export default function Profile() {
   const fileRef = useRef(null);
   const dispatch = useDispatch();
 
-  console.log(currentUser);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -32,7 +30,6 @@ export default function Profile() {
   };
 
   return (
-    currentUser! && (
       <div className={style.container}>
         <h1>Settings</h1>
         <fieldset>
@@ -79,6 +76,6 @@ export default function Profile() {
           </div>
         </fieldset>
       </div>
-    )
+    
   );
 }

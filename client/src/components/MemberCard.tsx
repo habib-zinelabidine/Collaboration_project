@@ -1,6 +1,5 @@
 import style from './MemberCard.module.css'
 export default function MemberCard({member}) {
-    console.log(member);
   return (
       
     <div className={style.container}>

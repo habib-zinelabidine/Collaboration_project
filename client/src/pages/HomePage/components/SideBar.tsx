@@ -2,14 +2,22 @@ import { Link } from "react-router-dom";
 import style from "./SideBar.module.css";
 import { useEffect, useState } from "react";
 import httpClient from "../../../axios";
+import { useSelector } from "react-redux";
 
 export default function SideBar({ showTopics }) {
-  const [topics, setTopics] = useState([]);
+  const { currentUser } = useSelector((state) => state["user"]);
+  const [originalTopics, setOriginalTopics] = useState([]);
+  const [filteredTopics, setFilteredTopics] = useState([]);
   useEffect(() => {
     const fetchTopics = async () => {
       try {
         const response = await httpClient.get("/api/topic/findall");
-        setTopics(response.data);
+        const filteredTopics = response.data.filter((topic) =>
+          topic.members.includes(currentUser._id)
+        );
+
+        setOriginalTopics(filteredTopics);
+        setFilteredTopics(filteredTopics);
       } catch (error) {
         console.log(error);
       }
@@ -17,15 +25,11 @@ export default function SideBar({ showTopics }) {
     fetchTopics();
   }, []);
   const handleSearch = (e) => {
-    setTopics(
-      topics.filter((topic) =>
-        topic.topicName.toLowerCase().includes(e.target.value.toLowerCase())
-      )
-      
+    const newFilteredTopics = originalTopics.filter((topic) =>
+      topic.topicName.toLowerCase().includes(e.target.value.toLowerCase())
     );
 
-    console.log(topics);
-    console.log(e.target.value);
+    setFilteredTopics(newFilteredTopics);
   };
 
   return (
@@ -37,7 +41,7 @@ export default function SideBar({ showTopics }) {
         onChange={handleSearch}
       />
       <ul>
-        {topics.map(({ _id, description, imageUrl, topicName }) => (
+        {filteredTopics.map(({ _id, description, imageUrl, topicName }) => (
           <Link
             to={`/home/topic/${_id}`}
             state={{ _id, description, imageUrl, topicName }}
