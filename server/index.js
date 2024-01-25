@@ -7,6 +7,7 @@ import userRouter from "./routes/user.router.js";
 import messageRouter from "./routes/message.router.js";
 import discussionRouter from "./routes/discussion.router.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
@@ -16,9 +17,9 @@ import MessageModel from "./model/MessageModel.js";
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGO)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log(err));
+.connect(process.env.MONGO)
+.then(() => console.log("Connected to MongoDB"))
+.catch((err) => console.log(err));
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
@@ -52,7 +53,7 @@ io.on("connection", (socket) => {
       text: data.text,
     });
     privateMessage.save().then(() => {
-      io.emit("private-message-from-server", data);
+      io.emit("private-message-from-server", privateMessage);
     });
   });
   socket.on("start-typing", () => {
@@ -71,6 +72,7 @@ server.listen(process.env.PORT, () => {
 });
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", authRouter);
 app.use("/api/topic", topicRouter);
