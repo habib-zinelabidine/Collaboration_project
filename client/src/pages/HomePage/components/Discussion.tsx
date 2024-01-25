@@ -54,12 +54,14 @@ export default function Discussion({ showTopics, showDiscussionList }) {
   };
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    setmessages("");
-    socket.emit("private-message", {
-      senderId: currentUser._id,
-      receiverId: friendId,
-      text: messages,
-    });
+    if (messages.trim() !== "") {
+      setmessages("");
+      socket.emit("private-message", {
+        senderId: currentUser._id,
+        receiverId: friendId,
+        text: messages,
+      });
+    } else return;
   };
   const handleSearch = (e) => {
     setusers(
@@ -70,105 +72,112 @@ export default function Discussion({ showTopics, showDiscussionList }) {
   };
 
   return (
-    currentUser! && (
-      <div
-        className={
-          showTopics
-            ? style.showDiscussion
-            : style.container && showDiscussionList
-            ? style.showDiscussionList
-            : style.container
-        }
-      >
-        <div className={style.contact}>
-          <h2>Contacts</h2>
-          <div className={style.search_contact}>
-            {searchContact ? (
-              <div className={style.search_friend}>
-                <input
-                  type="text"
-                  placeholder="Search friend"
-                  onChange={handleSearch}
-                />
-                <button
-                  onClick={() => {
-                    setsearchContact(false);
-                  }}
-                >
-                  X
-                </button>
-              </div>
-            ) : (
-              <button onClick={() => setsearchContact(true)}>
-                <FaSearch />
+    <div
+      className={
+        showTopics
+          ? style.showDiscussion
+          : style.container && showDiscussionList
+          ? style.showDiscussionList
+          : style.container
+      }
+    >
+      <div className={style.contact}>
+        <h2>Contacts</h2>
+        <div className={style.search_contact}>
+          {searchContact ? (
+            <div className={style.search_friend}>
+              <input
+                type="text"
+                placeholder="Search friend"
+                onChange={handleSearch}
+              />
+              <button
+                onClick={() => {
+                  setsearchContact(false);
+                }}
+              >
+                X
               </button>
-            )}
-          </div>
+            </div>
+          ) : (
+            <button onClick={() => setsearchContact(true)}>
+              <FaSearch />
+            </button>
+          )}
         </div>
-        {showDiscussion ? (
-          <div className={style.discussion}>
-            <div className={style.discussion_content}>
-              <div className={style.person_info}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <img src={avatar} />
-                  <h1>{username}</h1>
-                </div>
-                <div>
-                  <button onClick={() => setshowDiscussion(false)}>X</button>
-                </div>
+      </div>
+      {showDiscussion ? (
+        <div className={style.discussion}>
+          <div className={style.discussion_content}>
+            <div className={style.person_info}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <img src={avatar} />
+                <h1>{username}</h1>
               </div>
-              <div className={style.message}>
-                <div className={style.personal_message}>
-                  {discussionChat.map((msg) => (
-                    <p key={Math.random()}>{msg.text}</p>
-                  ))}
-                </div>
+              <div>
+                <button onClick={() => setshowDiscussion(false)}>X</button>
               </div>
-              <form className={style.send_message} onSubmit={handleSendMessage}>
-                <input
-                  type="text"
-                  placeholder="Type your message"
-                  onChange={(e) => setmessages(e.target.value)}
-                  value={messages}
-                />
-                <button type="submit">
-                  <FaPaperPlane />
-                </button>
-              </form>
             </div>
-            <div className={style.discussion_people}>
-              {currentUsers! &&
-                currentUsers.map((data) => (
-                  <img
-                    src={data.avatar}
-                    title={data.username}
-                    key={data._id}
-                    onClick={() => handleDiscussion(data)}
-                  />
+            <div className={style.message}>
+              <div className={style.personal_message}>
+                {discussionChat.map((msg) => (
+                  <p
+                    key={msg._id}
+                    className={
+                      msg.senderId === currentUser._id
+                        ? style.senderMessages
+                        : style.receiverMessages
+                    }
+                  >
+                    {msg.text}
+                  </p>
                 ))}
+              </div>
             </div>
+            <form className={style.send_message} onSubmit={handleSendMessage}>
+              <input
+                type="text"
+                placeholder="Type your message"
+                onChange={(e) => setmessages(e.target.value)}
+                value={messages}
+              />
+              <button type="submit">
+                <FaPaperPlane />
+              </button>
+            </form>
           </div>
-        ) : (
-          <div className={style.users_list}>
+          <div className={style.discussion_people}>
             {currentUsers! &&
-              users.map((data) => (
-                <div
-                  style={{ position: "relative" }}
-                  className={
-                    showDiscussion
-                      ? style.users_showDiscussion
-                      : style.users_container
-                  }
-                  onClick={() => handleDiscussion(data)}
+              currentUsers.map((data) => (
+                <img
+                  src={data.avatar}
+                  title={data.username}
                   key={data._id}
-                >
-                  <img src={data.avatar} title={data.username} />
-                  <h2>{data.username}</h2>
-                </div>
+                  onClick={() => handleDiscussion(data)}
+                />
               ))}
           </div>
-        )}
-      </div>
-    )
+        </div>
+      ) : (
+        <div className={style.users_list}>
+          {currentUsers! &&
+            users.map((data) => (
+              <div
+                style={{ position: "relative" }}
+                className={
+                  showDiscussion
+                    ? style.users_showDiscussion
+                    : style.users_container
+                }
+                onClick={() => handleDiscussion(data)}
+                key={data._id}
+              >
+                <img src={data.avatar} title={data.username} />
+                <h2>{data.username}</h2>
+              </div>
+            ))}
+        </div>
+      )}
+    </div>
   );
 }

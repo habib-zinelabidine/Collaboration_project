@@ -19,10 +19,14 @@ export default function SignIn() {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await httpClient.post("/api/auth/signin", {
-        email,
-        password,
-      });
+      const response = await httpClient.post(
+        "/api/auth/signin",
+        {
+          email,
+          password,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
       localStorage.setItem("dataKey", JSON.stringify(response.data));
 
       console.log(response);
@@ -38,7 +42,6 @@ export default function SignIn() {
   };
   return (
     <div className={style.container}>
-
       <form onSubmit={handleSubmit}>
         <h1>Collabory</h1>
         <h2>Log in to your account</h2>
