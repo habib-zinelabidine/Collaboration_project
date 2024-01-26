@@ -34,6 +34,8 @@ export default function TopicForm({
   const [imageUrl, setimageUrl] = useState(null);
   const [image, setimage] = useState(null);
   const [fileName, setfileName] = useState("No selected file");
+  console.log(imageUrl);
+
   return (
     <form
       className={style.content}
@@ -44,6 +46,7 @@ export default function TopicForm({
           description,
           imageUrl,
         });
+
       }}
       onClick={(e) => e.stopPropagation()}
     >
@@ -87,6 +90,7 @@ export default function TopicForm({
             setimage(URL.createObjectURL(files[0]));
             setimageUrl(files[0]);
           }
+          
         }}
       />
       {image ? (

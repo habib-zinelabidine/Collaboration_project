@@ -3,10 +3,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const createTopic = async (req, res, next) => {
+  const {userId} = req.params
   try {
     let topic = new Topic({
       topicName: req.body.topicName,
       description: req.body.description,
+      members : [userId]
+
     });
     if (req.file) {
       topic.imageUrl =
@@ -15,7 +18,7 @@ export const createTopic = async (req, res, next) => {
     topic
       .save()
       .then((response) => {
-        res.json(topic);
+        res.status(201).json(topic);
       })
       .catch((error) => {
         res.json({ error });
@@ -58,3 +61,12 @@ export const updateTopics = async (req, res, next) => {
     next(error);
   }
 };
+export const getTopicMembers = async(req,res,next)=>{
+  const {topicId} = req.params
+  try {
+    const topicMembers = await Topic.findById(topicId).populate("members");
+    res.status(200).json(topicMembers)
+  } catch (error) {
+    next(error)
+  }
+}

@@ -27,7 +27,11 @@ export default function Discussion({ showTopics, showDiscussionList }) {
     setsocket(io(baseURL));
     getUsers().then((response) => {
       dispatch(fetchUsers(response.data));
-      setusers(response.data);
+      const filteredUsers = response.data.filter(
+        (user) => user._id !== currentUser._id
+      );
+
+      setusers(filteredUsers);
     });
   }, []);
   useEffect(() => {
@@ -147,8 +151,8 @@ export default function Discussion({ showTopics, showDiscussionList }) {
             </form>
           </div>
           <div className={style.discussion_people}>
-            {currentUsers! &&
-              currentUsers.map((data) => (
+            {
+              users.map((data) => (
                 <img
                   src={data.avatar}
                   title={data.username}
@@ -160,8 +164,7 @@ export default function Discussion({ showTopics, showDiscussionList }) {
         </div>
       ) : (
         <div className={style.users_list}>
-          {currentUsers! &&
-            users.map((data) => (
+            {users.map((data) => (
               <div
                 style={{ position: "relative" }}
                 className={

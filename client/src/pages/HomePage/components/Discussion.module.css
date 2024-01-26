@@ -115,9 +115,8 @@
   flex-direction: column-reverse;
 }
 .message p {
-  margin: 10px 0;
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 8px 10px;
   width: fit-content;
   color: var(--text-color);
 }
@@ -283,12 +282,12 @@
 .senderMessages {
   background-color: var(--button-background-color);
   align-self: flex-end;
-  
+  margin: 5px 0 5px auto;
 }
 .receiverMessages {
   background-color: var(--message-background-color);
   align-self: flex-start;
-
+  margin: 5px auto 5px 0;
 }
 
 @media (max-width: 768px) {

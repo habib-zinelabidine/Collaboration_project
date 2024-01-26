@@ -1,18 +1,16 @@
 .container {
   height: 92vh;
-  display: grid;
-  grid-template-rows: 88% 2% 10%;
+  display: flex;
+  flex-direction: column;
 }
 .content {
   padding: 10px;
 }
 .topic_disccussion {
   overflow: auto;
+  height: 82vh;
 }
-.topic_disccussion h1 {
-  color: var(--text-color);
-  margin-bottom: 20px;
-}
+
 .topic_disccussion p {
   color: var(--text-color);
 }
@@ -25,7 +23,7 @@
   flex-direction: column;
   justify-content: space-around;
   padding: 10px 0;
-  }
+}
 
 .message {
   width: 100%;
@@ -34,46 +32,89 @@
   background-color: var(--message-backgroung-color);
   color: var(--text-color);
 }
-.send_message{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 10px;
-}
-.send_message input{
-    width: 80%;
-    height: 80%;
-    background-color: var(--content-background-color);
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    color: var(--text-color);
-    padding: 10px;
-
-}
-.send_message button{
-    width: 15%;
-    height: 70%;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    background-color: var(--button-background-color);
-    color: var(--text-color);
-}
-.typing{
-  color: var(--text-color);
-}
-.members{
+.send_message {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 0 10px;
 }
-.members button{
-  padding: 10px;
-  height: 40px;
-  border: none;
+.send_message input {
+  width: 80%;
+  height: 80%;
+  background-color: var(--content-background-color);
   border-radius: 5px;
+  border: none;
+  outline: none;
+  color: var(--text-color);
+  padding: 10px;
+}
+.send_message button {
+  width: 15%;
+  height: 70%;
+  border-radius: 10px;
+  border: none;
   outline: none;
   background-color: var(--button-background-color);
   color: var(--text-color);
+}
+.typing {
+  color: var(--text-color);
+}
+.members {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+.members button {
+  height: 40px;
+  width: 40px;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  background-color: var(--content-background-color);
+  color: var(--text-color);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.topic_header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.topic_header h1{
+  color: var(--text-color);
+}
+.topic_header button{
+  margin: 0 5px;
+  height: 35px;
+  width: 35px;
+}
+.messages {
+  max-height: 250px;
+  background-color: var(--content-background-color);
+  overflow: auto;
+}
+.messages p {
+  color: white;
+}
+.form_button {
+  display: flex;
+  justify-content: end;
+}
+.form_button button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  width: 10%;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: var(--button-background-color);
+  color: white;
 }
