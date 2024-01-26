@@ -5,6 +5,8 @@ import {
   UndoRedo,
   BoldItalicUnderlineToggles,
   toolbarPlugin,
+  InsertImage,
+  imagePlugin,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
 import DiscussionCard from "../../components/DiscussionCard";
@@ -15,6 +17,16 @@ import { useSelector } from "react-redux";
 import PopUp from "../../components/PopUp";
 import TopicForm from "../../components/TopicForm";
 import AddMembers from "../../components/AddMembersForm.tsx";
+import {
+  FaEdit,
+  FaLayerGroup,
+  FaObjectGroup,
+  FaPaperPlane,
+  FaPlus,
+  FaTeamspeak,
+  FaUsers,
+} from "react-icons/fa";
+import ShowMembers from "../../components/ShowMembers.tsx";
 
 export default function TopicDetails() {
   let { state } = useLocation();
@@ -26,11 +38,13 @@ export default function TopicDetails() {
   const [typingTimeOut, setTypingTimeOut] = useState(null);
   const { currentUser } = useSelector((state) => state["user"]);
   const [showPopUp, setshowPopUp] = useState(false);
+  const [showPopUpContent, setshowPopUpContent] = useState(0);
 
   const [user, setuser] = useState([]);
 
-  const handleShowPopUp = () => {
+  const handleShowAddMembers = () => {
     setshowPopUp(!showPopUp);
+    setshowPopUpContent(1);
   };
 
   useEffect(() => {
@@ -46,13 +60,11 @@ export default function TopicDetails() {
     fetchDiscussion();
   }, [state._id]);
 
-
   useEffect(() => {
     if (!socket) return;
 
     socket.on("message-from-server", (data: { data: any }) => {
       setloadDiscussion((prev) => [...prev, data]);
-      
     });
     socket.on("typing-started-from-server", () => {
       setTyping(true);
@@ -63,15 +75,17 @@ export default function TopicDetails() {
   }, [socket]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    setmessages("");
-    socket.emit("send-message", {
-      message : messages,
-      topicId: state._id,
-      senderId: currentUser._id,
-    });
+    if (messages.trim() !== "") {
+      socket.emit("send-message", {
+        message: messages,
+        topicId: state._id,
+        senderId: currentUser._id,
+      });
+      setmessages("");
+    }
   };
-  const handleInput = (e) => {
-    setmessages(e.target.value);
+  const handleInput = (value) => {
+    setmessages(value);
     socket.emit("start-typing");
     if (typingTimeOut) clearTimeout(typingTimeOut);
     setTypingTimeOut(
@@ -80,31 +94,48 @@ export default function TopicDetails() {
       }, 1000)
     );
   };
-  const handleSubmitForm = async(data) => {
-   try {
-     const response = await httpClient.patch(`/api/topic/update/${state._id}`,data)
-     console.log(response);
-     
-   } catch (error) {
-     console.log(error);
-     
-   }
- };
+  const handleSubmitForm = async (data) => {
+    try {
+      const response = await httpClient.patch(
+        `/api/topic/update/${state._id}`,
+        data
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const showMembers = () => {
+    setshowPopUp(!showPopUp);
+    setshowPopUpContent(2);
+  };
 
   return (
     <div className={style.container}>
       {
         <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
-          <AddMembers onSubmit={handleSubmitForm}/>
+          {showPopUpContent === 1 ? (
+            <AddMembers onSubmit={handleSubmitForm} />
+          ) : showPopUpContent === 2 ? (
+            <ShowMembers topicId={state._id}/>
+          ) : null}
         </PopUp>
       }
       <div className={style.topic_disccussion}>
         <img src={state.imageUrl} />
         <div className={style.content}>
           <div className={style.members}>
-            <h1>{state.topicName}</h1>
-            <button type="button" onClick={handleShowPopUp}>
-              Add members
+            <div className={style.topic_header}>
+              <h1>{state.topicName}</h1>
+              <button onClick={showMembers}>
+                <FaUsers />
+              </button>
+              <button>
+                <FaEdit />
+              </button>
+            </div>
+            <button type="button" onClick={handleShowAddMembers}>
+              <FaPlus />
             </button>
           </div>
           <p>{state.description}</p>
@@ -120,24 +151,45 @@ export default function TopicDetails() {
           </div>
         </div>
       </div>
-      <div className={style.typing}>
-        {typing ? `${currentUser.username} is typing...` : ""}
-      </div>
-      <form className={style.send_message} onSubmit={handleSubmit}>
+
+      {/* <form className={style.send_message} onSubmit={handleSubmit}>
         <input type="text" onChange={handleInput} value={messages} />
         <button type="submit">send</button>
+      </form> */}
+      <form onSubmit={handleSubmit}>
+        <div className={style.messages}>
+          <MDXEditor
+            markdown={messages}
+            contentEditableClassName="messages"
+            onChange={handleInput}
+            plugins={[
+              imagePlugin({
+                imageUploadHandler: () => {
+                  return Promise.resolve("https://picsum.photos/200/300");
+                },
+                imageAutocompleteSuggestions: [
+                  "https://picsum.photos/200/300",
+                  "https://picsum.photos/200",
+                ],
+              }),
+              toolbarPlugin({
+                toolbarContents: () => (
+                  <>
+                    {" "}
+                    <BoldItalicUnderlineToggles />
+                    <InsertImage />
+                  </>
+                ),
+              }),
+            ]}
+          />
+        </div>
+        <div className={style.form_button}>
+          <button type="submit">
+            Send <FaPaperPlane />{" "}
+          </button>
+        </div>
       </form>
-      {/* <div className={style.message}>
-        <MDXEditor markdown={"# Hello World"} plugins={[
-        toolbarPlugin({
-          toolbarContents: () => (
-            <div>
-              <BoldItalicUnderlineToggles />
-            </div>
-          )
-        })
-      ]} />
-      </div> */}
     </div>
   );
 }

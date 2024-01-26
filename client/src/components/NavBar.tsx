@@ -1,10 +1,11 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./NavBar.module.css";
 import { FaBell, FaComment, FaEllipsisV } from "react-icons/fa";
 import { useState } from "react";
 import httpClient from "../axios";
 import logo from "../assets/teamwork.svg";
+import { logout } from "../redux/features/user.js";
 
 export default function NavBar({
   setshowTopics,
@@ -12,15 +13,18 @@ export default function NavBar({
   showDiscussionList,
   setshowDiscussionList,
 }) {
-  const { currentUser } = useSelector((state) => state["user"]);
+  const {currentUser} = useSelector((state)=>state["user"]);
   const [showSettings, setshowSettings] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
       const response = await httpClient.get("/api/auth/logout");
       if (response.status === 200) {
         navigate("/signin");
+        dispatch(logout());
+        localStorage.removeItem("dataKey");
       }
     } catch (error) {
       console.log(error);
@@ -28,7 +32,6 @@ export default function NavBar({
   };
 
   return (
-    currentUser! && (
       <div className={style.container}>
         <div className={style.logo}>
           <Link to={"/home"}>
@@ -86,6 +89,6 @@ export default function NavBar({
           </div>
         </div>
       </div>
-    )
+    
   );
 }

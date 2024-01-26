@@ -1,0 +1,24 @@
+.container{
+    background-color: white;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: black;
+    transform: translate(-50%, -50%);
+    min-height: 100px;
+}
+.memberCard {
+    margin: 10px 0;
+    padding: 10px;
+    max-height: 200px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    justify-content: space-between;
+  }

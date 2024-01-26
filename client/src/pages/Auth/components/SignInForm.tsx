@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import style from "./SignIn.module.css";
 import httpClient from "../../../axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../redux/features/user.tsx";
 import DarkMode from "../../../components/DarkMode.tsx";
 
@@ -15,18 +15,23 @@ export default function SignIn() {
   const [errorMessage, seterrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state["user"]);
+
+  useEffect(() => {
+    if (currentUser !== null) {
+      navigate("/home");
+    }else{
+      navigate("/signin")
+    }
+  }, [currentUser, navigate]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await httpClient.post(
-        "/api/auth/signin",
-        {
-          email,
-          password,
-        },
-        { headers: { "Content-Type": "application/json" } }
-      );
+      const response = await httpClient.post("/api/auth/signin", {
+        email,
+        password,
+      });
       localStorage.setItem("dataKey", JSON.stringify(response.data));
 
       console.log(response);
