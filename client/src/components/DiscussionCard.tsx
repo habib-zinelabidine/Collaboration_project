@@ -3,6 +3,7 @@ import style from "./DiscussionCard.module.css";
 import TimeAgo from "timeago-react";
 import { useEffect, useState } from "react";
 import httpClient from "../axios";
+import { Buffer } from "buffer";
 
 export default function DiscussionCard({ message, discussionTime, senderId }) {
   const [user, setuser] = useState(Object);
@@ -22,7 +23,7 @@ export default function DiscussionCard({ message, discussionTime, senderId }) {
   }, [senderId]);
 
   const dateObject = new Date(discussionTime);
-
+  
   return (
     <div className={style.container}>
       <img src={user.avatar} />
@@ -34,7 +35,13 @@ export default function DiscussionCard({ message, discussionTime, senderId }) {
           </p>
         </div>
         <div className={style.message}>
-          <p>{message}</p>
+        <p>{message}</p>
+
+         {/*  {(convertedMessage.includes("http") || convertedMessage.includes("\\") || convertedMessage.includes(".") )? (
+            <img src={convertedMessage} width={50} height={50} />
+          ) : (
+            <p>{convertedMessage}</p>
+          )} */}
         </div>
       </div>
     </div>

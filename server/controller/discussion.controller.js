@@ -15,6 +15,10 @@ export const createDiscussion = async(req,res,next)=>{
     const discussion = new Discussion({
         senderId,topicId,message
     })
+    if (req.file) {
+        discussion.message =
+          process.env.baseUrl + process.env.PORT + "/" + req.file.path;
+      }
     try {
         const result = await discussion.save();
         res.status(201).json(result);

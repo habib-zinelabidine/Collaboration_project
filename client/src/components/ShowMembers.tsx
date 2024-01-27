@@ -14,11 +14,11 @@ export default function ShowMembers({ topicId }) {
     fetchMembers();
   }, []);
   return (
-    <div className={style.container}>
+    <div className={style.container} onClick={(e) => e.stopPropagation()}>
       <h1>Topic Members</h1>
       <div className={style.memberCard}>
         {members.map((member) => (
-          <MemberCard key={member._id} member={member} />
+          <MemberCard key={member._id} member={member} showCloseButton={false}/>
         ))}
       </div>
     </div>

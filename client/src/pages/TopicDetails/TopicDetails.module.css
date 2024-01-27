@@ -103,10 +103,11 @@
 .form_button {
   display: flex;
   justify-content: end;
+  border-top: 1px solid white;
 }
 .form_button button {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   padding: 5px;
   width: 10%;

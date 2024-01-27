@@ -1,15 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap");
-:root {
-  --background-color: #fff;
-  --text-color: #121416d8;
-  --link-color: #543fd7;
-}
-
-[data-theme="light"] {
+:root,[data-theme="light"] {
   --background-color: #fff;
   --text-color: #121416d8;
   --content-background-color: #86dbee;
   --message-background-color: #d5d5e0;
+  --sender-message-background-color : #0084ff;
+  --receiver-message-background-color : #f0f0f0;
   --button-background-color: #2060eb;
   --link-color: #543fd7;
 }
@@ -18,6 +14,8 @@
   --background-color: #1f1f2b;
   --content-background-color: #33333f;
   --message-background-color: #57575d;
+  --sender-message-background-color : #0084ff;
+  --receiver-message-background-color : #303030;
   --button-background-color: #7eb7b0;
   --text-color: #f7f8f8;
   --link-color: #828fff;

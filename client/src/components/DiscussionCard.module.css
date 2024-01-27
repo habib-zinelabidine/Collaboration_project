@@ -36,3 +36,7 @@
 .message p{
   color: var(--text-color)
 }
+.message img{
+  height: 150px;
+  width: 100px;
+}

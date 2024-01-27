@@ -4,9 +4,9 @@ import upload from '../middleware/uploadImage.js'
 import { verifyToken } from '../utils/verifyUser.js';
 const router = express.Router()
 
-router.post("/create/:userId",verifyToken,upload.single('imageUrl'),createTopic);
+router.post("/create/:createrId",verifyToken,upload.single('imageUrl'),createTopic);
 router.get("/findall",verifyToken,getTopics);
 router.get("/getmembers/:topicId",verifyToken,getTopicMembers);
-router.patch("/update/:id",verifyToken,updateTopics);
+router.patch("/update/:id",upload.single('imageUrl'),verifyToken,updateTopics);
 
 export default router;
