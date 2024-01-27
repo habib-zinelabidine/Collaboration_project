@@ -49,7 +49,6 @@ export default function TopicsHomePage() {
     formData.append("topicName", data.topicName);
     formData.append("description", data.description);
     formData.append("imageUrl", data.imageUrl);
-    formData.append("members", data.option);
     try {
       const response = await httpClient.post(
         `/api/topic/create/${currentUser._id}`,
@@ -107,6 +106,7 @@ export default function TopicsHomePage() {
           <TopicForm
             onClose={() => setshowPopUp(false)}
             onSubmit={handleSubmit}
+            values={''}
           />
         </PopUp>
       }
@@ -123,7 +123,7 @@ export default function TopicsHomePage() {
         <button onClick={handleShowPopUp}>Add topic</button>
       </div>
       <div className={style.options}>
-        <TopicCard topics={filteredTopics} />
+        <TopicCard topics={filteredTopics} updatedData={setFilteredTopics}/>
       </div>
     </div>
   );

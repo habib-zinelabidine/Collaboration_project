@@ -41,10 +41,10 @@ export default function SideBar({ showTopics }) {
         onChange={handleSearch}
       />
       <ul>
-        {filteredTopics.map(({ _id, description, imageUrl, topicName }) => (
+        {filteredTopics.map(({ _id, description, imageUrl, topicName, createrId }) => (
           <Link
             to={`/home/topic/${_id}`}
-            state={{ _id, description, imageUrl, topicName }}
+            state={{ _id, description, imageUrl, topicName, createrId }}
             key={_id}
           >
             <li>

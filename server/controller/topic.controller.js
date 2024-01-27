@@ -3,12 +3,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const createTopic = async (req, res, next) => {
-  const {userId} = req.params
+  const {createrId} = req.params
   try {
     let topic = new Topic({
       topicName: req.body.topicName,
       description: req.body.description,
-      members : [userId]
+      members : [createrId],
+      createrId : createrId
 
     });
     if (req.file) {
@@ -36,18 +37,26 @@ export const getTopics = async (req, res, next) => {
   }
 };
 export const updateTopics = async (req, res, next) => {
+  
   try {
+    let updateFields = {
+      topicName: req.body.topicName,
+      description: req.body.description,
+    };
+    if (req.file) {
+      updateFields.imageUrl =
+        process.env.baseUrl + process.env.PORT + "/" + req.file.path;
+    }
+
+    if (req.body.members && req.body.members.length > 0) {
+      updateFields.members = { $each: req.body.members };
+    }
+
     const updateTopic = await Topic.findByIdAndUpdate(
       req.params.id,
       {
-        $addToSet: {
-          members: { $each: req.body.members }, // $each is used to add multiple values
-        },
-        $set: {
-          topicName: req.body.topicName,
-          description: req.body.description,
-          imageUrl: req.body.imageUrl,
-        },
+        $addToSet: updateFields.members ? updateFields.members : {},
+        $set: updateFields,
       },
       { new: true }
     );

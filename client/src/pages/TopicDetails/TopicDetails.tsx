@@ -27,26 +27,28 @@ import {
   FaUsers,
 } from "react-icons/fa";
 import ShowMembers from "../../components/ShowMembers.tsx";
+import EditMembers from "../../components/EditMembers.tsx";
 
 export default function TopicDetails() {
   let { state } = useLocation();
+
   const [socket, setsocket] = useState(null);
   const [messages, setmessages] = useState("");
   const [loadDiscussion, setloadDiscussion] = useState([]);
-  const [chat, setChat] = useState([]);
   const [typing, setTyping] = useState(false);
   const [typingTimeOut, setTypingTimeOut] = useState(null);
   const { currentUser } = useSelector((state) => state["user"]);
   const [showPopUp, setshowPopUp] = useState(false);
   const [showPopUpContent, setshowPopUpContent] = useState(0);
-
-  const [user, setuser] = useState([]);
+  const [image, setimage] = useState(null);
+  const [blobUrl, setblobUrl] = useState("");
+  const [newFile, setnewFile] = useState(null);
+  const fileName = "example.jpg";
 
   const handleShowAddMembers = () => {
     setshowPopUp(!showPopUp);
     setshowPopUpContent(1);
   };
-
   useEffect(() => {
     setsocket(io(baseURL));
     const fetchDiscussion = async () => {
@@ -72,17 +74,27 @@ export default function TopicDetails() {
     socket.on("typing-stoped-from-server", () => {
       setTyping(false);
     });
+    convertBlobToFile(blobUrl, fileName);
   }, [socket]);
-  const handleSubmit = (e) => {
+  console.log(newFile);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (messages.trim() !== "") {
-      socket.emit("send-message", {
-        message: messages,
-        topicId: state._id,
-        senderId: currentUser._id,
-      });
-      setmessages("");
+
+    const formData = new FormData();
+    formData.append("message", newFile);
+    try {
+      const response = await httpClient.post("/api/discussion/", formData);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
     }
+    socket.emit("send-message", {
+      message: messages,
+      topicId: state._id,
+      senderId: currentUser._id,
+    });
+    setmessages("");
   };
   const handleInput = (value) => {
     setmessages(value);
@@ -109,6 +121,65 @@ export default function TopicDetails() {
     setshowPopUp(!showPopUp);
     setshowPopUpContent(2);
   };
+  const showEdit = () => {
+    setshowPopUp(!showPopUp);
+    setshowPopUpContent(3);
+  };
+  const handleEditSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append("topicName", data.topicName);
+    formData.append("description", data.description);
+    formData.append("imageUrl", data.imageUrl);
+    try {
+      const response = await httpClient.patch(
+        `api/topic/update/${state._id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      if (response.status === 200) {
+        setshowPopUp(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  /*   async function imageUploadHandler(image: File) {
+    const formData = new FormData();
+    formData.append("text", image);
+    const response = await httpClient.post("/api/message", formData);
+    console.log(response.data);
+    return Promise.resolve(URL.createObjectURL(image));
+  } */
+  /*   async function imageUploadHandler(image: File) {
+    const formData = new FormData()
+    formData.append('message', image)
+    // send the file to your server and return
+    // the URL of the uploaded image in the response
+    const response = await httpClient.post('/api/discussion', formData
+    )
+    console.log(response.data);
+    
+  } */
+  async function convertBlobToFile(blobUrl, fileName) {
+    try {
+      // Fetch the Blob data from the Blob URL
+      const response = await fetch(blobUrl);
+      const blobData = await response.blob();
+
+      // Create a new File object from the Blob data
+      const file = new File([blobData], fileName, { type: blobData.type });
+
+      // Now you can use the 'file' object as needed
+      console.log("Converted file:", file);
+      setnewFile(file);
+      return file;
+    } catch (error) {
+      console.error("Error converting Blob to File:", error);
+      return null;
+    }
+  }
 
   return (
     <div className={style.container}>
@@ -117,8 +188,14 @@ export default function TopicDetails() {
           {showPopUpContent === 1 ? (
             <AddMembers onSubmit={handleSubmitForm} />
           ) : showPopUpContent === 2 ? (
-            <ShowMembers topicId={state._id}/>
-          ) : null}
+            <ShowMembers topicId={state._id} />
+          ) : (
+            <TopicForm
+              onClose={() => setshowPopUp(false)}
+              onSubmit={handleEditSubmit}
+              values={state}
+            />
+          )}
         </PopUp>
       }
       <div className={style.topic_disccussion}>
@@ -130,13 +207,17 @@ export default function TopicDetails() {
               <button onClick={showMembers}>
                 <FaUsers />
               </button>
-              <button>
-                <FaEdit />
-              </button>
+              {currentUser._id === state.createrId ? (
+                <button onClick={showEdit}>
+                  <FaEdit />
+                </button>
+              ) : null}
             </div>
-            <button type="button" onClick={handleShowAddMembers}>
-              <FaPlus />
-            </button>
+            {currentUser._id === state.createrId ? (
+              <button type="button" onClick={handleShowAddMembers}>
+                <FaPlus />
+              </button>
+            ) : null}
           </div>
           <p>{state.description}</p>
           <div className={style.discussion}>
@@ -152,10 +233,6 @@ export default function TopicDetails() {
         </div>
       </div>
 
-      {/* <form className={style.send_message} onSubmit={handleSubmit}>
-        <input type="text" onChange={handleInput} value={messages} />
-        <button type="submit">send</button>
-      </form> */}
       <form onSubmit={handleSubmit}>
         <div className={style.messages}>
           <MDXEditor
@@ -164,13 +241,11 @@ export default function TopicDetails() {
             onChange={handleInput}
             plugins={[
               imagePlugin({
-                imageUploadHandler: () => {
-                  return Promise.resolve("https://picsum.photos/200/300");
+                imageUploadHandler: (image: File) => {
+                  setimage(image);
+                  setblobUrl(URL.createObjectURL(image));
+                  return Promise.resolve(URL.createObjectURL(image));
                 },
-                imageAutocompleteSuggestions: [
-                  "https://picsum.photos/200/300",
-                  "https://picsum.photos/200",
-                ],
               }),
               toolbarPlugin({
                 toolbarContents: () => (

@@ -23,6 +23,9 @@
   cursor: pointer;
   border-radius: 5px;
 }
+.image_uploader img{
+  height: 100%;
+}
 .uploaded_row{
   margin: 10px 0;
   display: flex;

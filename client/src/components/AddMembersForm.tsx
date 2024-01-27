@@ -46,7 +46,7 @@ export default function AddMembers({ onSubmit }) {
       />
       <div className={style.memberCard}>
         {users.map((member) => (
-          <MemberCard key={Math.random() * 1000} member={member} />
+          <MemberCard key={Math.random() * 1000} member={member} showCloseButton={true}/>
         ))}
       </div>
       <button type="submit">Add Member</button>

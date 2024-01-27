@@ -5,8 +5,9 @@ export const addMessage = async (req, res) => {
   const message = new MessageModel({
     senderId,
     receiverId,
-    text,
+    text
   });
+  
   try {
     const result = await message.save();
     res.status(200).json(result);
