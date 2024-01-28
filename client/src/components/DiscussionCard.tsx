@@ -35,13 +35,13 @@ export default function DiscussionCard({ message, discussionTime, senderId }) {
           </p>
         </div>
         <div className={style.message}>
-        <p>{message}</p>
+        {/* <p>{message}</p> */}
 
-         {/*  {(convertedMessage.includes("http") || convertedMessage.includes("\\") || convertedMessage.includes(".") )? (
-            <img src={convertedMessage} width={50} height={50} />
+          {(message.includes("http") || message.includes("\\") || message.includes(".") )? (
+            <img src={message} width={50} height={50} />
           ) : (
-            <p>{convertedMessage}</p>
-          )} */}
+            <p>{message}</p>
+          )}
         </div>
       </div>
     </div>
