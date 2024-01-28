@@ -6,6 +6,7 @@ import topicRouter from "./routes/topic.router.js";
 import userRouter from "./routes/user.router.js";
 import messageRouter from "./routes/message.router.js";
 import discussionRouter from "./routes/discussion.router.js";
+import uploadImageRouter from "./routes/uploadImage.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
@@ -83,6 +84,7 @@ app.use("/api/topic", topicRouter);
 app.use("/api/user", userRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/discussion", discussionRouter);
+app.use("/api/upload", uploadImageRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -26,6 +26,7 @@ import {
   FaTeamspeak,
   FaUsers,
 } from "react-icons/fa";
+import removeMd from "remove-markdown";
 import ShowMembers from "../../components/ShowMembers.tsx";
 import EditMembers from "../../components/EditMembers.tsx";
 
@@ -77,27 +78,31 @@ export default function TopicDetails() {
     convertBlobToFile(blobUrl, fileName);
   }, [socket]);
   console.log(newFile);
+  console.log(image);
+  function removeMarkdownImageSyntax(text) {
+    // Regular expression to match Markdown image syntax
+    const regex = /!\[\]\([^)]*\)/g;
+    return text.replace(regex, "");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("message", newFile);
-    try {
-      const response = await httpClient.post("/api/discussion/", formData);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
     socket.emit("send-message", {
       message: messages,
       topicId: state._id,
       senderId: currentUser._id,
     });
+    console.log(messages);
+
     setmessages("");
   };
   const handleInput = (value) => {
-    setmessages(value);
+    const match = value.match(/\!\[\]\((.*?)\)/);
+  
+    // Check if a match is found and extract the link
+    const imageUrls = match ? match[1] : null;
+    setmessages(imageUrls);
     socket.emit("start-typing");
     if (typingTimeOut) clearTimeout(typingTimeOut);
     setTypingTimeOut(
@@ -152,16 +157,38 @@ export default function TopicDetails() {
     console.log(response.data);
     return Promise.resolve(URL.createObjectURL(image));
   } */
-  /*   async function imageUploadHandler(image: File) {
-    const formData = new FormData()
-    formData.append('message', image)
+  async function imageUploadHandler(image: File) {
+    const formData = new FormData();
+    formData.append("imageUrl", image);
+    console.log(image);
+
     // send the file to your server and return
     // the URL of the uploaded image in the response
-    const response = await httpClient.post('/api/discussion', formData
-    )
+    const response = await httpClient.post("/api/upload/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });/* 
     console.log(response.data);
-    
-  } */
+    console.log(response.data.imageUrl.replace(/!\[\]\([^)]*\)/g, "")); */
+    setmessages(response.data.imageUrl);
+
+    return(
+      response.data.imageUrl
+    );
+  }
+  const markdownString = "![](http://localhost:3000/uploads\\1706397213585.jpeg)";
+
+  // Use a regular expression to extract the link from Markdown image syntax
+  const match = markdownString.match(/\!\[\]\((.*?)\)/);
+  
+  // Check if a match is found and extract the link
+  const imageUrls = match ? match[1] : null;
+  
+  console.log(imageUrls);
+  // Example usage
+  const markdownText =
+    "![](http://example.com/image.jpg) Some text with an image.";
+  const textWithoutMarkdownImage = markdownText.replace(/!\[\]\([^)]*\)/g, "");
+  console.log(textWithoutMarkdownImage);
   async function convertBlobToFile(blobUrl, fileName) {
     try {
       // Fetch the Blob data from the Blob URL
@@ -241,11 +268,7 @@ export default function TopicDetails() {
             onChange={handleInput}
             plugins={[
               imagePlugin({
-                imageUploadHandler: (image: File) => {
-                  setimage(image);
-                  setblobUrl(URL.createObjectURL(image));
-                  return Promise.resolve(URL.createObjectURL(image));
-                },
+                imageUploadHandler,
               }),
               toolbarPlugin({
                 toolbarContents: () => (
