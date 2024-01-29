@@ -4,31 +4,32 @@ import TopicForm from "../../../components/TopicForm";
 import style from "../HomePage.module.css";
 import TopicCard from "../../../components/TopicCard";
 import httpClient from "../../../axios";
-import { FaHome, FaComment, FaPeopleCarry } from "react-icons/fa";
 import { useOutletContext } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTopics } from "../../../redux/features/topics";
 
 export default function TopicsHomePage() {
   const { currentUser } = useSelector((state) => state["user"]);
   const showTopics = useOutletContext();
   const [topics, setTopics] = useState([]);
+  const dispatch = useDispatch();
   const [originalTopics, setOriginalTopics] = useState([]);
   const [filteredTopics, setFilteredTopics] = useState([]);
   useEffect(() => {
-    const fetchTopics = async () => {
+    const getTopics = async () => {
       try {
         const response = await httpClient.get("/api/topic/findall");
         const filteredTopics = response.data.filter((topic) =>
           topic.members.includes(currentUser._id)
         );
-
+        dispatch(fetchTopics(response.data));
         setOriginalTopics(filteredTopics);
         setFilteredTopics(filteredTopics);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchTopics();
+    getTopics();
   }, []);
 
   const [showPopUp, setshowPopUp] = useState(false);

@@ -4,24 +4,21 @@
   margin: 10px;
 }
 .container img {
-  height: 50%;
+  margin-top: 8px;
+  height: 40px;
   width: 90%;
-  border-radius: 15%;
-}
-.container p {
-  padding: 10px;
   border-radius: 5px;
-
 }
+
 .content {
   display: grid;
-  grid-template-rows: 20% 80%;
+  grid-template-rows: 10% 90%;
   border-radius: 5px;
 }
 .userDetails {
   display: flex;
-  align-items: center;
   justify-content: start;
+  align-items: baseline;
   color: var(--text-color);
 }
 .userDetails h2{
@@ -33,10 +30,14 @@
     font-size: 0.8rem;
 
 }
+.message {
+  margin-top: 10px;
+}
 .message p{
   color: var(--text-color)
 }
 .message img{
   height: 150px;
   width: 100px;
+  margin: 0 2px;
 }

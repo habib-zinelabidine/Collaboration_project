@@ -11,6 +11,7 @@ export default function TopicCard({ topics,updatedData }: any) {
           key={_id}
           state={{ _id, description, imageUrl, topicName, createrId }}
           className={style.card}
+          
         >
           <div className={style.image}>
             <img alt="topic image" src={imageUrl} />
