@@ -84,7 +84,7 @@ app.use("/api/topic", topicRouter);
 app.use("/api/user", userRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/discussion", discussionRouter);
-app.use("/api/upload", uploadImageRouter);
+app.use("/api/image", uploadImageRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -1,38 +1,24 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import style from "./TopicDetails.module.css";
-import {
-  MDXEditor,
-  UndoRedo,
-  BoldItalicUnderlineToggles,
-  toolbarPlugin,
-  InsertImage,
-  imagePlugin,
-} from "@mdxeditor/editor";
+
 import "@mdxeditor/editor/style.css";
 import DiscussionCard from "../../components/DiscussionCard";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import httpClient, { baseURL } from "../../axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PopUp from "../../components/PopUp";
 import TopicForm from "../../components/TopicForm";
 import AddMembers from "../../components/AddMembersForm.tsx";
-import {
-  FaEdit,
-  FaLayerGroup,
-  FaObjectGroup,
-  FaPaperPlane,
-  FaPlus,
-  FaTeamspeak,
-  FaUsers,
-} from "react-icons/fa";
-import removeMd from "remove-markdown";
+import { FaEdit, FaPaperPlane, FaPlus, FaTrash, FaUsers } from "react-icons/fa";
 import ShowMembers from "../../components/ShowMembers.tsx";
-import EditMembers from "../../components/EditMembers.tsx";
+import MarkdownEditor from "../../components/MDXEditor.tsx";
+import { fetchTopics } from "../../redux/features/topics.tsx";
 
 export default function TopicDetails() {
   let { state } = useLocation();
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [socket, setsocket] = useState(null);
   const [messages, setmessages] = useState("");
   const [loadDiscussion, setloadDiscussion] = useState([]);
@@ -41,10 +27,6 @@ export default function TopicDetails() {
   const { currentUser } = useSelector((state) => state["user"]);
   const [showPopUp, setshowPopUp] = useState(false);
   const [showPopUpContent, setshowPopUpContent] = useState(0);
-  const [image, setimage] = useState(null);
-  const [blobUrl, setblobUrl] = useState("");
-  const [newFile, setnewFile] = useState(null);
-  const fileName = "example.jpg";
 
   const handleShowAddMembers = () => {
     setshowPopUp(!showPopUp);
@@ -75,34 +57,22 @@ export default function TopicDetails() {
     socket.on("typing-stoped-from-server", () => {
       setTyping(false);
     });
-    convertBlobToFile(blobUrl, fileName);
   }, [socket]);
-  console.log(newFile);
-  console.log(image);
-  function removeMarkdownImageSyntax(text) {
-    // Regular expression to match Markdown image syntax
-    const regex = /!\[\]\([^)]*\)/g;
-    return text.replace(regex, "");
-  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    console.log(messages);
 
+    e.preventDefault();
     socket.emit("send-message", {
       message: messages,
       topicId: state._id,
       senderId: currentUser._id,
     });
-    console.log(messages);
-
     setmessages("");
   };
+
   const handleInput = (value) => {
-    const match = value.match(/\!\[\]\((.*?)\)/);
-  
-    // Check if a match is found and extract the link
-    const imageUrls = match ? match[1] : null;
-    setmessages(imageUrls);
+    setmessages(value);
     socket.emit("start-typing");
     if (typingTimeOut) clearTimeout(typingTimeOut);
     setTypingTimeOut(
@@ -145,68 +115,26 @@ export default function TopicDetails() {
       );
       if (response.status === 200) {
         setshowPopUp(false);
+        dispatch(fetchTopics(response.data));
       }
     } catch (error) {
       console.log(error);
     }
   };
-  /*   async function imageUploadHandler(image: File) {
-    const formData = new FormData();
-    formData.append("text", image);
-    const response = await httpClient.post("/api/message", formData);
-    console.log(response.data);
-    return Promise.resolve(URL.createObjectURL(image));
-  } */
-  async function imageUploadHandler(image: File) {
-    const formData = new FormData();
-    formData.append("imageUrl", image);
-    console.log(image);
 
-    // send the file to your server and return
-    // the URL of the uploaded image in the response
-    const response = await httpClient.post("/api/upload/", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });/* 
-    console.log(response.data);
-    console.log(response.data.imageUrl.replace(/!\[\]\([^)]*\)/g, "")); */
-    setmessages(response.data.imageUrl);
-
-    return(
-      response.data.imageUrl
-    );
-  }
-  const markdownString = "![](http://localhost:3000/uploads\\1706397213585.jpeg)";
-
-  // Use a regular expression to extract the link from Markdown image syntax
-  const match = markdownString.match(/\!\[\]\((.*?)\)/);
-  
-  // Check if a match is found and extract the link
-  const imageUrls = match ? match[1] : null;
-  
-  console.log(imageUrls);
-  // Example usage
-  const markdownText =
-    "![](http://example.com/image.jpg) Some text with an image.";
-  const textWithoutMarkdownImage = markdownText.replace(/!\[\]\([^)]*\)/g, "");
-  console.log(textWithoutMarkdownImage);
-  async function convertBlobToFile(blobUrl, fileName) {
+  const handleDeleteTopic = async () => {
     try {
-      // Fetch the Blob data from the Blob URL
-      const response = await fetch(blobUrl);
-      const blobData = await response.blob();
-
-      // Create a new File object from the Blob data
-      const file = new File([blobData], fileName, { type: blobData.type });
-
-      // Now you can use the 'file' object as needed
-      console.log("Converted file:", file);
-      setnewFile(file);
-      return file;
+      if (window.confirm('Are you sure you want to delete ?')) {
+        const response = await httpClient.delete(
+          `/api/topic/delete/${state._id}`
+        );
+        console.log(response.data);
+        navigate("/home");
+      }
     } catch (error) {
-      console.error("Error converting Blob to File:", error);
-      return null;
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className={style.container}>
@@ -226,7 +154,14 @@ export default function TopicDetails() {
         </PopUp>
       }
       <div className={style.topic_disccussion}>
-        <img src={state.imageUrl} />
+        <div className={style.header}>
+          <img src={state.imageUrl} />
+          {currentUser._id === state.createrId ? (
+            <button type="button" onClick={handleDeleteTopic}>
+              <FaTrash />
+            </button>
+          ) : null}
+        </div>
         <div className={style.content}>
           <div className={style.members}>
             <div className={style.topic_header}>
@@ -262,25 +197,7 @@ export default function TopicDetails() {
 
       <form onSubmit={handleSubmit}>
         <div className={style.messages}>
-          <MDXEditor
-            markdown={messages}
-            contentEditableClassName="messages"
-            onChange={handleInput}
-            plugins={[
-              imagePlugin({
-                imageUploadHandler,
-              }),
-              toolbarPlugin({
-                toolbarContents: () => (
-                  <>
-                    {" "}
-                    <BoldItalicUnderlineToggles />
-                    <InsertImage />
-                  </>
-                ),
-              }),
-            ]}
-          />
+          <MarkdownEditor markdown={messages} onChange={handleInput} />
         </div>
         <div className={style.form_button}>
           <button type="submit">

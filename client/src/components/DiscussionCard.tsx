@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
 import style from "./DiscussionCard.module.css";
 import TimeAgo from "timeago-react";
 import { useEffect, useState } from "react";
 import httpClient from "../axios";
-import { Buffer } from "buffer";
+import MarkdownEditor from "./MDXEditor";
+import "./settingButton.css";
 
 export default function DiscussionCard({ message, discussionTime, senderId }) {
   const [user, setuser] = useState(Object);
@@ -23,7 +23,7 @@ export default function DiscussionCard({ message, discussionTime, senderId }) {
   }, [senderId]);
 
   const dateObject = new Date(discussionTime);
-  
+
   return (
     <div className={style.container}>
       <img src={user.avatar} />
@@ -35,13 +35,11 @@ export default function DiscussionCard({ message, discussionTime, senderId }) {
           </p>
         </div>
         <div className={style.message}>
-        {/* <p>{message}</p> */}
-
-          {(message.includes("http") || message.includes("\\") || message.includes(".") )? (
-            <img src={message} width={50} height={50} />
-          ) : (
-            <p>{message}</p>
-          )}
+          <MarkdownEditor
+            markdown={message}
+            readOnly
+            contentEditableClassName="content"
+          />
         </div>
       </div>
     </div>

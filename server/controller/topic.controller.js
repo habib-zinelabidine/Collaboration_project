@@ -79,3 +79,12 @@ export const getTopicMembers = async(req,res,next)=>{
     next(error)
   }
 }
+
+export const deleteTopic = async(req,res,next)=>{
+try {
+  const  deletedTopic=await Topic.findByIdAndDelete(req.params.topicId);
+  res.status(200).json("topic deleted successfully!");
+} catch (error) {
+  next(error);
+}
+}
