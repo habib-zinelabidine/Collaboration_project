@@ -3,14 +3,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const createTopic = async (req, res, next) => {
-  const {createrId} = req.params
+  const { createrId } = req.params;
   try {
     let topic = new Topic({
       topicName: req.body.topicName,
       description: req.body.description,
-      members : [createrId],
-      createrId : createrId
-
+      members: [createrId],
+      createrId: createrId,
     });
     if (req.file) {
       topic.imageUrl =
@@ -37,7 +36,6 @@ export const getTopics = async (req, res, next) => {
   }
 };
 export const updateTopics = async (req, res, next) => {
-  
   try {
     let updateFields = {
       topicName: req.body.topicName,
@@ -70,21 +68,21 @@ export const updateTopics = async (req, res, next) => {
     next(error);
   }
 };
-export const getTopicMembers = async(req,res,next)=>{
-  const {topicId} = req.params
+export const getTopicMembers = async (req, res, next) => {
+  const { topicId } = req.params;
   try {
     const topicMembers = await Topic.findById(topicId).populate("members");
-    res.status(200).json(topicMembers)
+    res.status(200).json(topicMembers);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
-export const deleteTopic = async(req,res,next)=>{
-try {
-  const  deletedTopic=await Topic.findByIdAndDelete(req.params.topicId);
-  res.status(200).json("topic deleted successfully!");
-} catch (error) {
-  next(error);
-}
-}
+export const deleteTopic = async (req, res, next) => {
+  try {
+    const deletedTopic = await Topic.findByIdAndDelete(req.params.topicId);
+    res.status(200).json(deletedTopic);
+  } catch (error) {
+    next(error);
+  }
+};

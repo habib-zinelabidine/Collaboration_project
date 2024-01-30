@@ -6,9 +6,10 @@ import { useSelector } from "react-redux";
 
 export default function SideBar({ showTopics }) {
   const { currentUser } = useSelector((state) => state["user"]);
+  const { topics } = useSelector((state) => state["topics"]);
   const [originalTopics, setOriginalTopics] = useState([]);
   const [filteredTopics, setFilteredTopics] = useState([]);
-  useEffect(() => {
+/*   useEffect(() => {
     const fetchTopics = async () => {
       try {
         const response = await httpClient.get("/api/topic/findall");
@@ -23,7 +24,7 @@ export default function SideBar({ showTopics }) {
       }
     };
     fetchTopics();
-  }, []);
+  }, []); */
   const handleSearch = (e) => {
     const newFilteredTopics = originalTopics.filter((topic) =>
       topic.topicName.toLowerCase().includes(e.target.value.toLowerCase())
@@ -41,7 +42,7 @@ export default function SideBar({ showTopics }) {
         onChange={handleSearch}
       />
       <ul>
-        {filteredTopics.map(({ _id, description, imageUrl, topicName, createrId }) => (
+        {topics && topics.map(({ _id, description, imageUrl, topicName, createrId }) => (
           <Link
             to={`/home/topic/${_id}`}
             state={{ _id, description, imageUrl, topicName, createrId }}

@@ -5,11 +5,32 @@ import style from "./HomePage.module.css";
 import { Outlet } from "react-router-dom";
 import httpClient from "../../axios";
 import NavBar from "../../components/NavBar";
+import { useDispatch } from "react-redux";
+import { fetchTopics } from "../../redux/features/topics";
 
 export default function HomePage() {
   const [showTopics, setshowTopics] = useState(false);
   const [showDiscussionList, setshowDiscussionList] = useState(false);
-
+  const [topics, settopics] = useState([]);
+const dispatch = useDispatch();
+  useEffect(() => {
+    const getTopics = async () => {
+      try {
+        const response = await httpClient.get("/api/topic/findall");
+        /* const filteredTopics = response.data.filter((topic) =>
+          topic.members.includes(currentUser._id)
+        ); */
+        dispatch(fetchTopics(response.data));
+        settopics(response.data);
+        /* setOriginalTopics(filteredTopics);
+        setFilteredTopics(filteredTopics); */
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTopics();
+  }, []);
+  
   return (
     <div className={style.container}>
       <NavBar
@@ -28,7 +49,7 @@ export default function HomePage() {
         }
       >
         <SideBar showTopics={showTopics} />
-        <Outlet context={showTopics} />
+        <Outlet context={showTopics}/>
         <Discussion
           showTopics={showTopics}
           showDiscussionList={showDiscussionList}

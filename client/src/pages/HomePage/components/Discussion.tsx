@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { getUsers } from "../../../APi/getUsers";
 import { fetchUsers } from "../../../redux/features/users";
 import { io } from "socket.io-client";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function Discussion({ showTopics, showDiscussionList }) {
   const navigate = useNavigate();
@@ -151,6 +153,7 @@ export default function Discussion({ showTopics, showDiscussionList }) {
             </form>
           </div>
           <div className={style.discussion_people}>
+            <Skeleton />
             {
               users.map((data) => (
                 <img

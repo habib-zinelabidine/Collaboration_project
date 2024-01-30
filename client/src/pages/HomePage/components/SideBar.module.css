@@ -12,9 +12,11 @@
 .container h3,
 .showTopics h3 {
   color: var(--text-color);
-  display: flex;
   padding: 10px;
   margin: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .container Link,
 .showTopics Link {
