@@ -6,7 +6,7 @@ import { login } from "../../redux/features/user";
 import DarkMode from "../../components/DarkMode";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toastError, toastSuccess } from "../../components/Toast";
 
 export default function Profile() {
   const { currentUser } = useSelector((state) => state["user"]);
@@ -32,27 +32,9 @@ export default function Profile() {
       dispatch(login(response.data));
       localStorage.setItem("dataKey", JSON.stringify(response.data));
       setchangePassword(false);
-      toast.success("Updated Successfully", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      toastSuccess("Updated Successfully!");
     } catch (error) {
-      toast.error(error.response.data.error, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      toastError(error.response.data.error);
     }
   };
 
@@ -143,18 +125,7 @@ export default function Profile() {
         </div>
       </fieldset>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+
     </div>
   );
 }

@@ -1,12 +1,13 @@
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-export default function LoadingSpinner() {
+export default function LoadingSpinner({circle,className }) {
   return (
-    <SkeletonTheme baseColor="#202020" highlightColor="#444">
-    <p>
-      <Skeleton count={3} />
-    </p>
-  </SkeletonTheme>
-  )
+    <SkeletonTheme
+      baseColor="var(--message-background-color)"
+      highlightColor="#444"
+    >
+      <Skeleton circle={circle} className={className}/>
+    </SkeletonTheme>
+  );
 }

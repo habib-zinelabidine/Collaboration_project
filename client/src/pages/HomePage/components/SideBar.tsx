@@ -3,28 +3,13 @@ import style from "./SideBar.module.css";
 import { useEffect, useState } from "react";
 import httpClient from "../../../axios";
 import { useSelector } from "react-redux";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 export default function SideBar({ showTopics }) {
-  const { currentUser } = useSelector((state) => state["user"]);
-  const { topics } = useSelector((state) => state["topics"]);
+  const { topics,loading } = useSelector((state) => state["topics"]);
   const [originalTopics, setOriginalTopics] = useState([]);
   const [filteredTopics, setFilteredTopics] = useState([]);
-/*   useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        const response = await httpClient.get("/api/topic/findall");
-        const filteredTopics = response.data.filter((topic) =>
-          topic.members.includes(currentUser._id)
-        );
 
-        setOriginalTopics(filteredTopics);
-        setFilteredTopics(filteredTopics);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchTopics();
-  }, []); */
   const handleSearch = (e) => {
     const newFilteredTopics = originalTopics.filter((topic) =>
       topic.topicName.toLowerCase().includes(e.target.value.toLowerCase())
@@ -43,10 +28,12 @@ export default function SideBar({ showTopics }) {
       />
       <ul>
         {topics && topics.map(({ _id, description, imageUrl, topicName, createrId }) => (
+          loading ? <LoadingSpinner className={style.topicLoading}circle={false}/> :
           <Link
             to={`/home/topic/${_id}`}
             state={{ _id, description, imageUrl, topicName, createrId }}
             key={_id}
+            
           >
             <li>
               <h3>#{topicName}</h3>

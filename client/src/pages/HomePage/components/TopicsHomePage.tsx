@@ -6,7 +6,7 @@ import TopicCard from "../../../components/TopicCard";
 import httpClient from "../../../axios";
 import { useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createTopic, fetchTopics } from "../../../redux/features/topics";
+import { createTopic, fetchTopics, startFetchTopics } from "../../../redux/features/topics";
 import ClipLoader from "react-spinners/ClipLoader";
 import HashLoader from "react-spinners/HashLoader";
 import Skeleton from "react-loading-skeleton";
@@ -15,14 +15,31 @@ import LoadingSpinner from "../../../components/LoadingSpinner";
 
 export default function TopicsHomePage() {
   const { currentUser } = useSelector((state) => state["user"]);
-  const { topics } = useSelector((state) => state["topics"]);
+  const { topics,loading } = useSelector((state) => state["topics"]);
   const showTopics = useOutletContext();
   // const [topics, setTopics] = useState([]);
   const dispatch = useDispatch();
   const [originalTopics, setOriginalTopics] = useState([]);
   const [filteredTopics, setFilteredTopics] = useState(topics);
   const [filterName, setfilterName] = useState("");
-  let [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getTopics = async () => {
+      dispatch(startFetchTopics());
+      try {
+        const response = await httpClient.get("/api/topic/findall");
+        /* const filteredTopics = response.data.filter((topic) =>
+          topic.members.includes(currentUser._id)
+        ); */
+        dispatch(fetchTopics(response.data));
+        /* setOriginalTopics(filteredTopics);
+        setFilteredTopics(filteredTopics); */
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTopics();
+  }, []);
 
   /*  useEffect(() => {
     const getTopics = async () => {
@@ -118,11 +135,7 @@ export default function TopicsHomePage() {
 
     setFilteredTopics(sortedByUpdatedDayTopics);
   };
-  const override: CSSProperties = {
-    display: "block",
-    margin: "0 auto",
-    borderColor: "red",
-  };
+
   return (
     <div className={!showTopics ? style.topic_container : style.showTopics}>
       {
@@ -147,15 +160,8 @@ export default function TopicsHomePage() {
         <button onClick={handleShowPopUp}>Add topic</button>
       </div>
       <div className={style.options}>
-        {loading ? (
-          <LoadingSpinner />
-        ) : (
-          topics && (
-            <TopicCard topics={newTopics} updatedData={setFilteredTopics} />
-          )
-        )}
+        <TopicCard topics={newTopics} loading={loading} />
       </div>
     </div>
-
   );
 }

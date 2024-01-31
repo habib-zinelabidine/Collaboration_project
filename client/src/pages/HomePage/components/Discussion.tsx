@@ -6,15 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import httpClient, { baseURL } from "../../../axios";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../../../APi/getUsers";
-import { fetchUsers } from "../../../redux/features/users";
+import { fetchUsers, startFetchUsers } from "../../../redux/features/users";
 import { io } from "socket.io-client";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+import LoadingSpinner from "../../../components/LoadingSpinner";
+
 export default function Discussion({ showTopics, showDiscussionList }) {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state["user"]);
-  const { currentUsers } = useSelector((state) => state["users"]);
+  const { currentUsers ,loading} = useSelector((state) => state["users"]);
   const [socket, setsocket] = useState(null);
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -27,6 +29,7 @@ export default function Discussion({ showTopics, showDiscussionList }) {
   const dispatch = useDispatch();
   useEffect(() => {
     setsocket(io(baseURL));
+    dispatch(startFetchUsers());
     getUsers().then((response) => {
       dispatch(fetchUsers(response.data));
       const filteredUsers = response.data.filter(
@@ -153,7 +156,6 @@ export default function Discussion({ showTopics, showDiscussionList }) {
             </form>
           </div>
           <div className={style.discussion_people}>
-            <Skeleton />
             {
               users.map((data) => (
                 <img
@@ -178,8 +180,8 @@ export default function Discussion({ showTopics, showDiscussionList }) {
                 onClick={() => handleDiscussion(data)}
                 key={data._id}
               >
-                <img src={data.avatar} title={data.username} />
-                <h2>{data.username}</h2>
+                {loading ? <LoadingSpinner circle={true} className={style.loadingUserImg}/> :<img src={data.avatar} title={data.username} />}
+                {loading ? <LoadingSpinner circle={false} className={style.loadingUsername}/> : <h2>{data.username}</h2>}
               </div>
             ))}
         </div>

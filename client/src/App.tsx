@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { login } from "./redux/features/user";
 import Profile from "./pages/Profile/Profile";
 import PrivateRoute from "./components/PrivateRoute";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,18 @@ function App() {
           <Route path="/home/:id" element={<TopicDetails />} />
         </Route>
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </Router>
   );
 }

@@ -31,8 +31,9 @@ a {
 .showTopics ul {
   text-decoration: none;
 }
-.container li,
-.showTopics li {
+.topicLoading {
+  width: 80%;
+  margin: 15px 10px;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
