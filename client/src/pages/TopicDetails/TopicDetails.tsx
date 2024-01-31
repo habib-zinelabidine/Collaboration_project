@@ -13,11 +13,12 @@ import AddMembers from "../../components/AddMembersForm.tsx";
 import { FaEdit, FaPaperPlane, FaPlus, FaTrash, FaUsers } from "react-icons/fa";
 import ShowMembers from "../../components/ShowMembers.tsx";
 import MarkdownEditor from "../../components/MDXEditor.tsx";
-import { deleteTopic, updateTopic } from "../../redux/features/topics.tsx";
+import { deleteTopic, fetchTopic, fetchTopics, updateTopic } from "../../redux/features/topics.tsx";
 import Skeleton from "react-loading-skeleton";
+import LoadingSpinner from "../../components/LoadingSpinner.tsx";
 
 export default function TopicDetails() {
-  const { topics } = useSelector((state) => state["topics"]);
+  const { topics, loading } = useSelector((state) => state["topics"]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [socket, setsocket] = useState(null);
@@ -29,11 +30,26 @@ export default function TopicDetails() {
   const [showPopUp, setshowPopUp] = useState(false);
   const [showPopUpContent, setshowPopUpContent] = useState(0);
   const params = useParams();
+  const [loadingDiscussion, setloadingDiscussion] = useState(true);
   let state = topics?.find((topic) => topic._id === params.id);
   console.log(params.id);
   const ref = useRef(null)
 
-
+useEffect(()=>{
+  if(topics === null){
+    const getTopic = async()=>{
+      try {
+        const response = await httpClient.get("/api/topic/findall")
+        dispatch(fetchTopics(response.data));
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+    getTopic();
+  }
+},[])
   const handleShowAddMembers = () => {
     setshowPopUp(!showPopUp);
     setshowPopUpContent(1);
@@ -44,8 +60,12 @@ export default function TopicDetails() {
       setsocket(io(baseURL));
       const fetchDiscussion = async () => {
         try {
+          setloadingDiscussion(true);
+
           const response = await httpClient.get(`/api/discussion/${state?._id}`);
           setloadDiscussion(response.data);
+          setloadingDiscussion(false);
+          
         } catch (error) {
           console.log(error);
         }
@@ -53,6 +73,7 @@ export default function TopicDetails() {
       fetchDiscussion();
     }
   }, [state?._id]);
+  
 
   useEffect(() => {
     if (!socket) return;
@@ -146,6 +167,8 @@ export default function TopicDetails() {
       console.log(error);
     }
   };
+  console.log(state);
+  
 
   return state && (
     <div className={style.container}>
@@ -166,7 +189,7 @@ export default function TopicDetails() {
       }
       <div className={style.topic_disccussion}>
         <div className={style.header}>
-          <img src={state.imageUrl} />
+          {loading ? <LoadingSpinner className={style.loadingImg} circle={false}/> : <img src={state.imageUrl} />}
           {currentUser._id === state.createrId ? (
             <button type="button" onClick={handleDeleteTopic}>
               <FaTrash />
@@ -176,7 +199,7 @@ export default function TopicDetails() {
         <div className={style.content}>
           <div className={style.members}>
             <div className={style.topic_header}>
-              <h1>{state.topicName}</h1>
+              {loading ? <LoadingSpinner className={style.topicName} circle={false}/> : <h1>{state.topicName}</h1>}
               <button onClick={showMembers}>
                 <FaUsers />
               </button>
@@ -192,7 +215,7 @@ export default function TopicDetails() {
               </button>
             ) : null}
           </div>
-          <p>{state.description}</p>
+          {loading ? <LoadingSpinner className={style.description} circle={false}/> : <p>{state.description}</p>}
           <div className={style.discussion}>
             {loadDiscussion.map((message) => (
               <DiscussionCard
@@ -200,6 +223,7 @@ export default function TopicDetails() {
                 message={message.message}
                 discussionTime={message.createdAt}
                 senderId={message.senderId}
+                loading={loadingDiscussion}
               />
             ))}
           </div>

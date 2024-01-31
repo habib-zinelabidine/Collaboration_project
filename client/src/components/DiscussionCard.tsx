@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import httpClient from "../axios";
 import MarkdownEditor from "./MDXEditor";
 import "./settingButton.css";
+import { useSelector } from "react-redux";
+import LoadingSpinner from "./LoadingSpinner";
 
-export default function DiscussionCard({ message, discussionTime, senderId }) {
+export default function DiscussionCard({ message, discussionTime, senderId,loading }) {
   const [user, setuser] = useState(Object);
+  console.log(loading);
+  
   useEffect(() => {
     const fetchUserDiscussion = async () => {
       try {
@@ -26,21 +30,21 @@ export default function DiscussionCard({ message, discussionTime, senderId }) {
 
   return (
     <div className={style.container}>
-      <img src={user.avatar} />
+      {loading ? <LoadingSpinner className={style.loadingImg} circle={false} /> : <img src={user.avatar} />}
       <div className={style.content}>
         <div className={style.userDetails}>
-          <h2>{user.username}</h2>
-          <p>
+          {loading ? <LoadingSpinner className={style.loadingUsername} circle={false}/> :<h2>{user.username}</h2>}
+          {loading ? <LoadingSpinner className={style.loadingTimeAge} circle={false}/> : <p>
             <TimeAgo datetime={dateObject} />
-          </p>
+          </p>}
         </div>
-        <div className={style.message}>
+        {loading ? <LoadingSpinner className={style.loadingMessages} circle={false}/> : <div className={style.message}>
           <MarkdownEditor
             markdown={message}
             readOnly
             contentEditableClassName="content"
           />
-        </div>
+        </div>}
       </div>
     </div>
   );

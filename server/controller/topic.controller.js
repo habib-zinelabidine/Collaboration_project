@@ -35,6 +35,14 @@ export const getTopics = async (req, res, next) => {
     next(error);
   }
 };
+export const getTopic = async(req,res,next)=>{
+  try {
+    const topic = await Topic.findById(req.params.id)
+    res.status(200).json(topic);
+  } catch (error) {
+    next(error)
+  }
+}
 export const updateTopics = async (req, res, next) => {
   try {
     let updateFields = {

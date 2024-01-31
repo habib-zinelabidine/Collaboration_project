@@ -6,13 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../redux/features/user.tsx";
 import DarkMode from "../../../components/DarkMode.tsx";
+import { toastError, toastSuccess } from "../../../components/Toast.tsx";
 
 export default function SignIn() {
   const dispatch = useDispatch();
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const [error, seterror] = useState(false);
-  const [errorMessage, seterrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state["user"]);
@@ -33,16 +32,14 @@ export default function SignIn() {
         password,
       });
       localStorage.setItem("dataKey", JSON.stringify(response.data));
-
       console.log(response);
       setLoading(false);
       dispatch(login(response.data));
-      navigate("/home");
-      seterror(response.data.message);
+      toastSuccess(`welcome ${response.data.username}`)
+
     } catch (err) {
       setLoading(false);
-      seterror(true);
-      seterrorMessage(err.response.data.message);
+      toastError(err.response.data.message);
     }
   };
   return (
@@ -71,7 +68,6 @@ export default function SignIn() {
           <input type="checkbox" />
           <p>Keep me signed in</p>
         </div>
-        {error && <p className={style.error_message}>{errorMessage}</p>}
         <button className={style.btn}>
           {loading ? "Loading..." : "Login"}
         </button>

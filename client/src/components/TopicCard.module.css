@@ -11,6 +11,7 @@
   flex-direction: column;
   cursor: pointer;
   text-decoration: none;
+  width: 95%;
 }
 .container{
   display: flex;
