@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PopUp from "../../../components/PopUp";
 import TopicForm from "../../../components/TopicForm";
 import style from "../HomePage.module.css";
@@ -6,21 +6,20 @@ import TopicCard from "../../../components/TopicCard";
 import httpClient from "../../../axios";
 import { useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createTopic, fetchTopics, startFetchTopics } from "../../../redux/features/topics";
-import ClipLoader from "react-spinners/ClipLoader";
-import HashLoader from "react-spinners/HashLoader";
-import Skeleton from "react-loading-skeleton";
+import {
+  createTopic,
+  fetchTopics,
+  startFetchTopics,
+} from "../../../redux/features/topics";
 import "react-loading-skeleton/dist/skeleton.css";
-import LoadingSpinner from "../../../components/LoadingSpinner";
 
 export default function TopicsHomePage() {
   const { currentUser } = useSelector((state) => state["user"]);
-  const { topics,loading } = useSelector((state) => state["topics"]);
+  const { topics, loading } = useSelector((state) => state["topics"]);
   const showTopics = useOutletContext();
-  // const [topics, setTopics] = useState([]);
   const dispatch = useDispatch();
-  const [originalTopics, setOriginalTopics] = useState([]);
-  const [filteredTopics, setFilteredTopics] = useState(topics);
+  const [showPopUp, setshowPopUp] = useState(false);
+  const [filteredTopics, setFilteredTopics] = useState([topics]);
   const [filterName, setfilterName] = useState("");
 
   useEffect(() => {
@@ -28,12 +27,7 @@ export default function TopicsHomePage() {
       dispatch(startFetchTopics());
       try {
         const response = await httpClient.get("/api/topic/findall");
-        /* const filteredTopics = response.data.filter((topic) =>
-          topic.members.includes(currentUser._id)
-        ); */
         dispatch(fetchTopics(response.data));
-        /* setOriginalTopics(filteredTopics);
-        setFilteredTopics(filteredTopics); */
       } catch (error) {
         console.log(error);
       }
@@ -41,43 +35,18 @@ export default function TopicsHomePage() {
     getTopics();
   }, []);
 
-  /*  useEffect(() => {
-    const getTopics = async () => {
-      try {
-        const response = await httpClient.get("/api/topic/findall");
-        const filteredTopics = topics.filter((topic) =>
-          topic.members.includes(currentUser._id)
-        );
-        dispatch(fetchTopics(response.data));
-        setOriginalTopics(topics);
-        setFilteredTopics(topics);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getTopics();
-  }, []); */
-
-  const [showPopUp, setshowPopUp] = useState(false);
-  const [formData, setFormData] = useState(topics);
-
   const handleShowPopUp = () => {
     setshowPopUp(!showPopUp);
   };
 
   const handleSearch = (e) => {
-    /* const newFilteredTopics = topics.filter((topic) =>
-      topic.topicName.toLowerCase().includes(e.target.value.toLowerCase())
-    ); */
-
     setfilterName(e.target.value);
   };
-  const newTopics = topics
+  let newTopics = topics
     ? topics?.filter((topic) =>
         topic.topicName.toLowerCase().includes(filterName.toLowerCase())
       )
     : [];
-  console.log(newTopics);
 
   const handleSubmit = async (data) => {
     const formData = new FormData();
@@ -113,27 +82,27 @@ export default function TopicsHomePage() {
     }
   };
   const handleSortedByName = () => {
-    const sortedByNameTopics = [...filteredTopics].sort((a, b) =>
+    newTopics = [...topics].sort((a, b) =>
       a.topicName.localeCompare(b.topicName)
     );
 
-    setFilteredTopics(sortedByNameTopics);
+    dispatch(fetchTopics(newTopics));
   };
 
   const handleSortedByCreatedDay = () => {
-    const sortedByCreatedDayTopics = [...filteredTopics].sort(
+    const sortedByCreatedDayTopics = [...topics].sort(
       (a, b) => (new Date(a.createdAt) as any) - (new Date(b.createdAt) as any)
     );
 
-    setFilteredTopics(sortedByCreatedDayTopics);
+    dispatch(fetchTopics(sortedByCreatedDayTopics));
   };
 
   const handleSortedByUpdatedDay = () => {
-    const sortedByUpdatedDayTopics = [...filteredTopics].sort(
+    const sortedByUpdatedDayTopics = [...topics].sort(
       (a, b) => (new Date(a.updatedAt) as any) - (new Date(b.updatedAt) as any)
     );
 
-    setFilteredTopics(sortedByUpdatedDayTopics);
+    dispatch(fetchTopics(sortedByUpdatedDayTopics));
   };
 
   return (
@@ -160,7 +129,8 @@ export default function TopicsHomePage() {
         <button onClick={handleShowPopUp}>Add topic</button>
       </div>
       <div className={style.options}>
-        <TopicCard topics={newTopics} loading={loading} />
+          <TopicCard topics={newTopics} loading={loading} />
+        
       </div>
     </div>
   );

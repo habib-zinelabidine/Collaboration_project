@@ -1,22 +1,27 @@
 import { Link } from "react-router-dom";
 import style from "./SideBar.module.css";
-import { useEffect, useState } from "react";
-import httpClient from "../../../axios";
-import { useSelector } from "react-redux";
+import {  useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import { fetchTopics } from "../../../redux/features/topics";
 
 export default function SideBar({ showTopics }) {
   const { topics,loading } = useSelector((state) => state["topics"]);
+  const dispatch = useDispatch();
   const [originalTopics, setOriginalTopics] = useState([]);
   const [filteredTopics, setFilteredTopics] = useState([]);
+  const [filterName, setfilterName] = useState("");
+
 
   const handleSearch = (e) => {
-    const newFilteredTopics = originalTopics.filter((topic) =>
-      topic.topicName.toLowerCase().includes(e.target.value.toLowerCase())
-    );
+    setfilterName(e.target.value);
 
-    setFilteredTopics(newFilteredTopics);
   };
+  const newTopics = topics
+  ? topics?.filter((topic) =>
+      topic.topicName.toLowerCase().includes(filterName.toLowerCase())
+    )
+  : [];
 
   return (
     <div className={showTopics ? style.showTopics : style.container}>
@@ -27,8 +32,8 @@ export default function SideBar({ showTopics }) {
         onChange={handleSearch}
       />
       <ul>
-        {topics && topics.map(({ _id, description, imageUrl, topicName, createrId }) => (
-          loading ? <LoadingSpinner className={style.topicLoading}circle={false}/> :
+        {topics && newTopics.map(({ _id, description, imageUrl, topicName, createrId }) => (
+          loading ? <LoadingSpinner key={_id} className={style.topicLoading}circle={false}/> :
           <Link
             to={`/home/topic/${_id}`}
             state={{ _id, description, imageUrl, topicName, createrId }}

@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import style from "./TopicDetails.module.css";
 
 import "@mdxeditor/editor/style.css";
@@ -13,8 +13,11 @@ import AddMembers from "../../components/AddMembersForm.tsx";
 import { FaEdit, FaPaperPlane, FaPlus, FaTrash, FaUsers } from "react-icons/fa";
 import ShowMembers from "../../components/ShowMembers.tsx";
 import MarkdownEditor from "../../components/MDXEditor.tsx";
-import { deleteTopic, fetchTopic, fetchTopics, updateTopic } from "../../redux/features/topics.tsx";
-import Skeleton from "react-loading-skeleton";
+import {
+  deleteTopic,
+  fetchTopics,
+  updateTopic,
+} from "../../redux/features/topics.tsx";
 import LoadingSpinner from "../../components/LoadingSpinner.tsx";
 
 export default function TopicDetails() {
@@ -32,40 +35,36 @@ export default function TopicDetails() {
   const params = useParams();
   const [loadingDiscussion, setloadingDiscussion] = useState(true);
   let state = topics?.find((topic) => topic._id === params.id);
-  console.log(params.id);
-  const ref = useRef(null)
+  const ref = useRef(null);
 
-useEffect(()=>{
-  if(topics === null){
-    const getTopic = async()=>{
-      try {
-        const response = await httpClient.get("/api/topic/findall")
-        dispatch(fetchTopics(response.data));
-        console.log(response.data);
-      } catch (error) {
-        console.log(error);
-        
-      }
+  useEffect(() => {
+    if (topics === null) {
+      const getTopic = async () => {
+        try {
+          const response = await httpClient.get("/api/topic/findall");
+          dispatch(fetchTopics(response.data));
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getTopic();
     }
-    getTopic();
-  }
-},[])
+  }, []);
   const handleShowAddMembers = () => {
     setshowPopUp(!showPopUp);
     setshowPopUpContent(1);
   };
   useEffect(() => {
-    if(state?._id){
-
+    if (state?._id) {
       setsocket(io(baseURL));
       const fetchDiscussion = async () => {
         try {
           setloadingDiscussion(true);
-
-          const response = await httpClient.get(`/api/discussion/${state?._id}`);
+          const response = await httpClient.get(
+            `/api/discussion/${state?._id}`
+          );
           setloadDiscussion(response.data);
           setloadingDiscussion(false);
-          
         } catch (error) {
           console.log(error);
         }
@@ -73,7 +72,6 @@ useEffect(()=>{
       fetchDiscussion();
     }
   }, [state?._id]);
-  
 
   useEffect(() => {
     if (!socket) return;
@@ -90,14 +88,13 @@ useEffect(()=>{
   }, [socket]);
 
   const handleSubmit = async (e) => {
-    console.log(messages);
     e.preventDefault();
     socket.emit("send-message", {
       message: messages,
       topicId: state._id,
       senderId: currentUser._id,
     });
-    ref.current?.setMarkdown("")
+    ref.current?.setMarkdown("");
   };
 
   const handleInput = (value) => {
@@ -112,12 +109,13 @@ useEffect(()=>{
     );
   };
   const handleSubmitForm = async (data) => {
+    const formData = new FormData();
+    formData.append("members",data.members);
     try {
-      const response = await httpClient.patch(
+      await httpClient.patch(
         `/api/topic/update/${state._id}`,
         data
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -151,7 +149,6 @@ useEffect(()=>{
       console.log(error);
     }
   };
-  console.log(topics);
 
   const handleDeleteTopic = async () => {
     try {
@@ -167,79 +164,95 @@ useEffect(()=>{
       console.log(error);
     }
   };
-  console.log(state);
-  
 
-  return state && (
-    <div className={style.container}>
-      {
-        <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
-          {showPopUpContent === 1 ? (
-            <AddMembers onSubmit={handleSubmitForm} />
-          ) : showPopUpContent === 2 ? (
-            <ShowMembers topicId={state._id} />
-          ) : (
-            <TopicForm
-              onClose={() => setshowPopUp(false)}
-              onSubmit={handleEditSubmit}
-              values={state}
-            />
-          )}
-        </PopUp>
-      }
-      <div className={style.topic_disccussion}>
-        <div className={style.header}>
-          {loading ? <LoadingSpinner className={style.loadingImg} circle={false}/> : <img src={state.imageUrl} />}
-          {currentUser._id === state.createrId ? (
-            <button type="button" onClick={handleDeleteTopic}>
-              <FaTrash />
-            </button>
-          ) : null}
-        </div>
-        <div className={style.content}>
-          <div className={style.members}>
-            <div className={style.topic_header}>
-              {loading ? <LoadingSpinner className={style.topicName} circle={false}/> : <h1>{state.topicName}</h1>}
-              <button onClick={showMembers}>
-                <FaUsers />
-              </button>
-              {currentUser._id === state.createrId ? (
-                <button onClick={showEdit}>
-                  <FaEdit />
-                </button>
-              ) : null}
-            </div>
+  return (
+    state && (
+      <div className={style.container}>
+        {
+          <PopUp isOpen={showPopUp} onClose={() => setshowPopUp(false)}>
+            {showPopUpContent === 1 ? (
+              <AddMembers onSubmit={handleSubmitForm} />
+            ) : showPopUpContent === 2 ? (
+              <ShowMembers topicId={state._id} />
+            ) : (
+              <TopicForm
+                onClose={() => setshowPopUp(false)}
+                onSubmit={handleEditSubmit}
+                values={state}
+              />
+            )}
+          </PopUp>
+        }
+        <div className={style.topic_disccussion}>
+          <div className={style.header}>
+            {loading ? (
+              <LoadingSpinner className={style.loadingImg} circle={false} />
+            ) : (
+              <img src={state.imageUrl} />
+            )}
             {currentUser._id === state.createrId ? (
-              <button type="button" onClick={handleShowAddMembers}>
-                <FaPlus />
+              <button type="button" onClick={handleDeleteTopic}>
+                <FaTrash />
               </button>
             ) : null}
           </div>
-          {loading ? <LoadingSpinner className={style.description} circle={false}/> : <p>{state.description}</p>}
-          <div className={style.discussion}>
-            {loadDiscussion.map((message) => (
-              <DiscussionCard
-                key={message._id}
-                message={message.message}
-                discussionTime={message.createdAt}
-                senderId={message.senderId}
-                loading={loadingDiscussion}
-              />
-            ))}
+          <div className={style.content}>
+            <div className={style.members}>
+              <div className={style.topic_header}>
+                {loading ? (
+                  <LoadingSpinner className={style.topicName} circle={false} />
+                ) : (
+                  <h1>{state.topicName}</h1>
+                )}
+                <button onClick={showMembers}>
+                  <FaUsers />
+                </button>
+                {currentUser._id === state.createrId ? (
+                  <button onClick={showEdit}>
+                    <FaEdit />
+                  </button>
+                ) : null}
+              </div>
+              {currentUser._id === state.createrId ? (
+                <button type="button" onClick={handleShowAddMembers}>
+                  <FaPlus />
+                </button>
+              ) : null}
+            </div>
+            {loading ? (
+              <LoadingSpinner className={style.description} circle={false} />
+            ) : (
+              <p>{state.description}</p>
+            )}
+            <div className={style.discussion}>
+              {loadDiscussion.map((message) => (
+                <DiscussionCard
+                  key={message._id}
+                  message={message.message}
+                  discussionTime={message.createdAt}
+                  senderId={message.senderId}
+                  loading={loadingDiscussion}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className={style.messages}>
-          <MarkdownEditor markdown={messages} onChange={handleInput} ref={ref}/>
-        </div>
-        <div className={style.form_button}>
-          <button type="submit">
-            Send <FaPaperPlane />{" "}
-          </button>
-        </div>
-      </form>
-    </div>
+        <form onSubmit={handleSubmit}>
+          <div className={style.messages}>
+            <MarkdownEditor
+              markdown={messages}
+              onChange={handleInput}
+              ref={ref}
+            />
+          </div>
+          <div className={style.form_button}>
+            <button type="submit">
+              Send <FaPaperPlane />{" "}
+            </button>
+          </div>
+        </form>
+      </div>
+    )
   );
 }

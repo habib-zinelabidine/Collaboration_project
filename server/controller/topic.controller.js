@@ -55,15 +55,15 @@ export const updateTopics = async (req, res, next) => {
     }
 
     if (req.body.members && req.body.members.length > 0) {
-      updateFields.members = { $each: req.body.members };
+      updateFields.$addToSet = { members: { $each: req.body.members } };
     }
 
+    console.log('====================================');
+    console.log(updateFields);
+    console.log('====================================');
     const updateTopic = await Topic.findByIdAndUpdate(
       req.params.id,
-      {
-        $addToSet: updateFields.members ? updateFields.members : {},
-        $set: updateFields,
-      },
+      updateFields,
       { new: true }
     );
 

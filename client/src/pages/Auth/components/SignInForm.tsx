@@ -19,8 +19,8 @@ export default function SignIn() {
   useEffect(() => {
     if (currentUser !== null) {
       navigate("/home");
-    }else{
-      navigate("/signin")
+    } else {
+      navigate("/signin");
     }
   }, [currentUser, navigate]);
   const handleSubmit = async (e) => {
@@ -32,11 +32,9 @@ export default function SignIn() {
         password,
       });
       localStorage.setItem("dataKey", JSON.stringify(response.data));
-      console.log(response);
       setLoading(false);
       dispatch(login(response.data));
-      toastSuccess(`welcome ${response.data.username}`)
-
+      toastSuccess(`welcome ${response.data.username}`);
     } catch (err) {
       setLoading(false);
       toastError(err.response.data.message);

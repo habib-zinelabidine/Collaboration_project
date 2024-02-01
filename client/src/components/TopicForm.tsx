@@ -51,7 +51,6 @@ export default function TopicForm({ onClose, onSubmit, values }) {
             if (files) {
               setimage(URL.createObjectURL(files[0]));
               setimageUrl(files[0]);
-              console.log(files[0]);
               
             }
           }}

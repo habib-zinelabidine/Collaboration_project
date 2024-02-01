@@ -2,28 +2,41 @@ import { Link } from "react-router-dom";
 
 import style from "./TopicCard.module.css";
 import LoadingSpinner from "./LoadingSpinner";
+import { useSelector } from "react-redux";
+import topicsLogo from "../assets/no topics.png";
 
-export default function TopicCard({ topics,loading }: any) {
+export default function TopicCard({ topics, loading }: any) {
+  const { currentUser } = useSelector((state) => state["user"]);
+  console.log("====================================");
+  console.log(topics.length);
+  console.log("====================================");
   return (
     <>
-      {topics.map(({ _id, description, imageUrl, topicName, createrId }) => (
-        loading ? <LoadingSpinner className={style.card} circle={false}/> :
-        <Link
-        to={`/home/topic/${_id}`}
-        key={_id}
-        state={{ _id, description, imageUrl, topicName, createrId }}
-        className={style.card}
-        >
-        
-          <div className={style.image}>
-            <img alt="topic image" src={imageUrl} />
-          </div>
-          <div className={style.content}>
-            <h3 className={style.titme}>{topicName}</h3>
-            <p>{description}</p>
-          </div>
-        </Link>
-      ))}
+      {topics.length > 0 ? (
+        topics.map(
+          ({ _id, description, imageUrl, topicName, createrId, members }) =>
+            loading ? (
+              <LoadingSpinner className={style.card} circle={false} key={_id} />
+            ) : members.includes(currentUser._id) ? (
+              <Link
+                to={`/home/topic/${_id}`}
+                key={_id}
+                state={{ _id, description, imageUrl, topicName, createrId }}
+                className={style.card}
+              >
+                <div className={style.image}>
+                  <img alt="topic image" src={imageUrl} />
+                </div>
+                <div className={style.content}>
+                  <h3 className={style.titme}>{topicName}</h3>
+                  <p>{description}</p>
+                </div>
+              </Link>
+            ) : null
+        )
+      ) : (
+        <img src={topicsLogo} />
+      )}
     </>
   );
 }
