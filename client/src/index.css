@@ -2,8 +2,8 @@
 :root,[data-theme="light"] {
   --background-color: #fff;
   --text-color: #121416d8;
-  --content-background-color: #86dbee;
-  --message-background-color: #d5d5e0;
+  --content-background-color: #cbcbce;
+  --message-background-color: #e4e4e6;
   --sender-message-background-color : #0084ff;
   --receiver-message-background-color : #f0f0f0;
   --button-background-color: #2060eb;

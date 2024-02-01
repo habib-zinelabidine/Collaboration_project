@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import httpClient from "../axios";
 import MarkdownEditor from "./MDXEditor";
 import "./settingButton.css";
-import { useSelector } from "react-redux";
 import LoadingSpinner from "./LoadingSpinner";
 
 export default function DiscussionCard({ message, discussionTime, senderId,loading }) {
   const [user, setuser] = useState(Object);
-  console.log(loading);
   
   useEffect(() => {
     const fetchUserDiscussion = async () => {

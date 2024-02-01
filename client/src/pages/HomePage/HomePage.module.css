@@ -9,17 +9,19 @@
 }
 .options {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   margin-top: 20px;
 }
-.topic_container, .showTopics {
+.topic_container,
+.showTopics {
   width: 100%;
   height: 92vh;
   padding: 20px;
   overflow: auto;
   background-color: var(--background-color);
 }
-.topic_container h1, .showTopics h1 {
+.topic_container h1,
+.showTopics h1 {
   color: var(--text-color);
   display: flex;
   justify-content: center;
@@ -65,7 +67,8 @@
   font-size: 1rem;
 }
 
-.topic_container button, .showTopics button {
+.topic_container button,
+.showTopics button {
   width: 20%;
   background-color: var(--button-background-color);
 }
@@ -81,7 +84,7 @@
   .showTopics {
     width: 75%;
   }
-  .show_topic_container{
+  .show_topic_container {
     display: flex;
     position: relative;
   }
@@ -104,13 +107,13 @@
   .showTopics {
     width: 100%;
   }
-  .show_disscussion{
+  .show_disscussion {
     display: flex;
     position: relative;
   }
   .options {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (max-width: 500px) {
@@ -119,8 +122,13 @@
     grid-template-columns: repeat(1, 1fr);
   }
 }
-.CSSProperties {
-  display: block;
-  margin: 0 auto;
-  border-color: red;
-};
+@media (max-width: 320px) {
+  .options {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    width: 50%;
+  }
+  .topic_container {
+    width: 50%;
+  }
+}
