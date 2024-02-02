@@ -7,9 +7,7 @@ import topicsLogo from "../assets/no topics.png";
 
 export default function TopicCard({ topics, loading }: any) {
   const { currentUser } = useSelector((state) => state["user"]);
-  console.log("====================================");
-  console.log(topics.length);
-  console.log("====================================");
+
   return (
     <>
       {topics.length > 0 ? (
@@ -32,7 +30,12 @@ export default function TopicCard({ topics, loading }: any) {
                   <p>{description}</p>
                 </div>
               </Link>
-            ) : null
+            ) : (
+              <div className={style.noTopics}>
+                <img src={topicsLogo} />
+
+              </div>
+            )
         )
       ) : (
         <img src={topicsLogo} />

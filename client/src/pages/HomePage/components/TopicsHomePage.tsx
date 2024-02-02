@@ -129,8 +129,7 @@ export default function TopicsHomePage() {
         <button onClick={handleShowPopUp}>Add topic</button>
       </div>
       <div className={style.options}>
-          <TopicCard topics={newTopics} loading={loading} />
-        
+        <TopicCard topics={newTopics} loading={loading} />
       </div>
     </div>
   );

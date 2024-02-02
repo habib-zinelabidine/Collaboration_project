@@ -13,7 +13,7 @@
   text-decoration: none;
   width: 95%;
 }
-.container{
+.container {
   display: flex;
   align-items: flex-start;
 }
@@ -34,7 +34,6 @@
 }
 .content p {
   display: none;
-
 }
 .card:hover {
   padding: 20px;
@@ -48,4 +47,11 @@
     text-overflow: ellipsis;
     max-width: 100%;
   }
+}
+.noTopics {
+  grid-column: 2;
+  margin-top: 90px;
+}
+.noTopics img {
+  height: 80%;
 }
