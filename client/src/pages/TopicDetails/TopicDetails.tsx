@@ -116,6 +116,7 @@ export default function TopicDetails() {
         `/api/topic/update/${state._id}`,
         data
       );
+      setshowPopUp(false);
     } catch (error) {
       console.log(error);
     }

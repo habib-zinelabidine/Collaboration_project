@@ -75,6 +75,9 @@
 .side_bar {
   display: none;
 }
+.noTopics {
+  display: flex;
+}
 @media (max-width: 992px) {
   .content {
     display: grid;
